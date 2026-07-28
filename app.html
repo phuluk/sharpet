@@ -729,7 +729,7 @@ function resetApp(){
 }
 
 // init
-window.onLangChange = function(){
+window.onLangChange = async function(){
   // re-apply signup/login mode text (these override the default data-i18n text)
   if(document.getElementById('screen-login').classList.contains('active')){
     document.getElementById('login-title').textContent = session.isSignupMode ? t('login_title_signup') : t('login_title');
@@ -739,8 +739,32 @@ window.onLangChange = function(){
   }
   // domain pills and setup hint are rendered dynamically, not via data-i18n
   if(DOMAINS.length){ loadDomains(); }
-  // if mid-quiz, question text stays in the language it was fetched in until the next game
+  // if mid-quiz, re-fetch question text/options for the current question set in the new language
+  if(document.getElementById('screen-quiz').classList.contains('active') && state.questions.length){
+    await translateQuizQuestions();
+    renderQuestion();
+  }
 };
+
+async function translateQuizQuestions(){
+  var lang = getLang();
+  var ids = state.questions.map(function(q){ return q.id; });
+  var { data, error } = await supabaseClient
+    .from('question_translations')
+    .select('question_id, text, options')
+    .eq('language_code', lang)
+    .in('question_id', ids);
+  if(error || !data) return;
+  var byId = {};
+  data.forEach(function(row){ byId[row.question_id] = row; });
+  state.questions.forEach(function(q){
+    var row = byId[q.id];
+    if(row){
+      q.text = row.text;
+      q.opts = row.options.slice(0, Math.max(state.numAnswers, 2));
+    }
+  });
+}
 
 async function init(){
   updateSetupState();
