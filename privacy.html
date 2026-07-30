@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Sharpet — privacy</title>
+<link rel="stylesheet" href="assets/landing.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">S</span>Sharpet</a>
+    <div class="nav-cta">
+      <a class="btn btn-ghost-sm" href="index.html">← Back</a>
+    </div>
+  </div>
+</nav>
+
+<main class="legal">
+  <h1>Privacy</h1>
+  <p class="updated">Last updated: 30 July 2026. This page is available in English only.</p>
+
+  <p>Sharpet is a quiz app. This page describes exactly what it stores, why, and
+     how to get rid of it. If something here is unclear, ask before signing up.</p>
+
+  <h2>Playing as a guest</h2>
+  <p>Nothing about you is stored. Guest games are held in the browser tab and
+     disappear when you close it. The one thing kept on your device is your
+     language choice, in <code>localStorage</code> under the key
+     <strong>sharpet_lang</strong>, so the site opens in the same language next
+     time. No analytics, no advertising, no tracking cookies, no third-party
+     scripts — fonts and all code are served from this domain.</p>
+
+  <h2>With an account</h2>
+  <p>Creating an account stores:</p>
+  <ul>
+    <li><strong>Your e-mail address and a hash of your password.</strong> These
+        are held by Supabase Auth. The password itself is never stored — only a
+        bcrypt hash — and it is never visible to us or to this application.</li>
+    <li><strong>A display name</strong>, which you choose at sign-up. If you
+        leave it blank it defaults to the part of your e-mail before the
+        <code>@</code>.</li>
+    <li><strong>Your quiz history</strong>: which domains you played, in which
+        language, when, and whether each answer was right or wrong.</li>
+    <li><strong>Questions you report</strong> as incorrect, so an admin can
+        review them.</li>
+  </ul>
+  <p>That is the complete list. No IP logs beyond what the hosting providers
+     keep for operational security, no device fingerprinting, no profiling.</p>
+
+  <h2>Who can see it</h2>
+  <p>Your history, your reports and your profile are readable only by you. This
+     is enforced in the database with row-level security, not just in the app —
+     the browser is given credentials that cannot reach another account's rows.
+     If you accept a friend request, that person can see your display name; they
+     still cannot see your e-mail address or your answers.</p>
+
+  <h2>Where it lives</h2>
+  <p>Data is stored in a <a href="https://supabase.com/privacy" rel="noreferrer noopener">Supabase</a>
+     Postgres database. The site itself is served by
+     <a href="https://vercel.com/legal/privacy-policy" rel="noreferrer noopener">Vercel</a>.
+     Both are processors acting on our behalf; both may keep short-lived request
+     logs for security and abuse prevention.</p>
+
+  <h2>How long</h2>
+  <p>Your data is kept until you delete your account. Reported questions may be
+     kept after that with the reporter's identity removed, because the report
+     itself is about the question, not about you.</p>
+
+  <h2>Your rights</h2>
+  <p>If you are in the EU/EEA, the GDPR gives you the right to access, correct,
+     export, restrict, object to, and delete your data. To use any of them,
+     e-mail the address below. Deletion requests are honoured; there is no
+     retention exception we rely on to refuse one. You can also complain to your
+     national data protection authority.</p>
+
+  <h2>Contact</h2>
+  <p>Write to the maintainer of this deployment. If you are looking at this page
+     on a fork or a self-hosted copy, the operator of that copy is the
+     controller, not the original author.</p>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brand sm"><span class="brand-mark sm" aria-hidden="true">S</span>Sharpet</div>
+    <div class="fine">© 2026 Sharpet<a href="index.html">Home</a></div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -3,298 +3,217 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex">
 <title>Sharpet — play</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<script src="i18n.js"></script>
-<style>
-  :root{
-    --bg: #16132B;
-    --bg-deep: #0F0C22;
-    --surface: #201B3D;
-    --surface-2: #2A2450;
-    --border: rgba(245,243,255,0.12);
-    --border-strong: rgba(245,243,255,0.22);
-    --text: #F5F3FF;
-    --text-muted: #9B94C4;
-    --lime: #C4F135;
-    --coral: #FF5D73;
-    --sky: #4FD1FF;
-    --radius: 16px;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;min-height:100vh;
-    background:var(--bg);color:var(--text);
-    font-family:'Inter',sans-serif;line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    display:flex;flex-direction:column;
-    color-scheme:dark;
-  }
-  h1,h2,h3{font-family:'Space Grotesk',sans-serif;font-weight:700;margin:0;letter-spacing:-0.02em;}
-  .mono{font-family:'JetBrains Mono',monospace;}
-  a{color:inherit;text-decoration:none;}
-  button{font-family:inherit;cursor:pointer;}
-  :focus-visible{outline:2px solid var(--lime);outline-offset:3px;}
-  input,select{
-    font-family:inherit;font-size:14px;color:var(--text);
-    background:var(--surface-2);border:0.5px solid var(--border-strong);
-    border-radius:10px;padding:11px 14px;
-  }
-  input::placeholder{color:var(--text-muted);}
-  select option{background:var(--surface-2);color:var(--text);}
-
-  nav{
-    border-bottom:0.5px solid var(--border);
-    background:rgba(22,19,43,0.9);backdrop-filter:blur(10px);
-    position:sticky;top:0;z-index:20;
-  }
-  nav .wrap{max-width:1120px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;}
-  .brand{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk';font-weight:700;font-size:18px;}
-  .brand-mark{width:28px;height:28px;border-radius:8px;background:var(--lime);display:flex;align-items:center;justify-content:center;color:var(--bg-deep);font-weight:700;font-size:14px;transform:rotate(-6deg);}
-  .exit-link{font-size:13px;color:var(--text-muted);transition:color .15s;}
-  .exit-link:hover{color:var(--text);}
-  .lang-switch{position:relative;}
-  .lang-trigger{
-    display:none;align-items:center;gap:6px;
-    background:var(--surface-2);border:0.5px solid var(--border-strong);
-    border-radius:20px;padding:6px 10px;color:var(--text);
-    font-size:12px;font-weight:600;
-  }
-  .lang-trigger svg{width:14px;height:14px;flex:none;}
-  .lang-options{display:flex;gap:4px;background:var(--surface-2);border:0.5px solid var(--border-strong);border-radius:20px;padding:3px;}
-  .lang-options button{border:none;background:transparent;color:var(--text-muted);font-size:12px;font-weight:600;padding:6px 10px;border-radius:16px;width:auto;}
-  .lang-options button.active{background:var(--lime);color:var(--bg-deep);}
-
-  main{
-    flex:1;display:flex;align-items:center;justify-content:center;
-    padding:48px 20px;position:relative;
-  }
-  main::before{
-    content:'';position:absolute;inset:0;
-    background:radial-gradient(600px 320px at 20% 0%, rgba(196,241,53,0.08), transparent),
-               radial-gradient(500px 300px at 85% 100%, rgba(255,93,115,0.08), transparent);
-    pointer-events:none;
-  }
-
-  .card{
-    position:relative;
-    width:100%;max-width:460px;
-    background:var(--surface-2);
-    border:0.5px solid var(--border);
-    border-radius:20px;
-    padding:32px;
-    box-shadow:0 30px 70px -30px rgba(0,0,0,0.6);
-  }
-
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    width:100%;padding:13px 20px;border-radius:10px;font-size:14px;font-weight:600;
-    border:0.5px solid var(--border-strong);background:transparent;color:var(--text);
-    transition:transform .15s, border-color .15s, background .15s, opacity .15s;
-  }
-  .btn:hover{border-color:var(--text-muted);}
-  .btn:active{transform:scale(0.98);}
-  .btn-primary{background:var(--lime);color:var(--bg-deep);border:none;}
-  .btn-primary:hover{background:#d4ff4d;}
-  .btn-primary:disabled{background:var(--surface-2);color:var(--text-muted);opacity:0.6;cursor:not-allowed;}
-  .btn-primary:disabled:hover{background:var(--surface-2);}
-  .btn-row{display:flex;gap:10px;}
-  .btn-row .btn{width:auto;flex:1;}
-  .btn-danger-ghost{color:var(--coral);border-color:rgba(255,93,115,0.3);}
-  .btn-muted-ghost{color:var(--text-muted);}
-
-  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--sky);background:rgba(79,209,255,0.1);border:0.5px solid rgba(79,209,255,0.3);padding:5px 11px;border-radius:20px;margin-bottom:16px;}
-
-  /* LANDING */
-  .icon-badge{
-    width:56px;height:56px;border-radius:16px;background:rgba(196,241,53,0.12);
-    display:flex;align-items:center;justify-content:center;margin:0 auto 20px;
-    font-size:26px;
-  }
-  .center{text-align:center;}
-  .lead{color:var(--text-muted);font-size:14.5px;margin:8px 0 26px;}
-
-  /* SETUP */
-  .field-label{font-size:13px;font-weight:600;margin-bottom:10px;display:block;}
-  .field{margin-bottom:22px;}
-  .pill-grid{display:flex;flex-wrap:wrap;gap:8px;}
-  .pill{
-    font-size:13px;padding:8px 14px;border-radius:20px;
-    border:0.5px solid var(--border-strong);color:var(--text);
-    background:transparent;transition:all .15s;
-  }
-  .pill.active{background:rgba(196,241,53,0.15);border-color:var(--lime);color:var(--lime);}
-  .hint{font-size:12px;color:var(--text-muted);margin-top:10px;text-align:center;}
-  select{width:100%;}
-
-  /* CAPTCHA */
-  .captcha-box{font-size:26px;font-weight:700;font-family:'JetBrains Mono';text-align:center;margin:18px 0;letter-spacing:0.05em;}
-  input#captcha-input{width:100%;text-align:center;font-size:16px;margin-bottom:8px;}
-  .error-text{font-size:12px;color:var(--coral);min-height:16px;margin:0 0 8px;text-align:center;}
-
-  /* QUIZ */
-  .quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:12.5px;color:var(--text-muted);}
-  .score-pill{font-family:'JetBrains Mono';font-weight:700;font-size:12px;background:rgba(196,241,53,0.12);color:var(--lime);padding:4px 11px;border-radius:20px;}
-  .q-text{font-size:16px;font-weight:500;margin-bottom:18px;line-height:1.5;}
-  .opts{display:flex;flex-direction:column;gap:9px;margin-bottom:14px;}
-  .opt{
-    border:0.5px solid var(--border-strong);border-radius:12px;padding:12px 15px;
-    font-size:14px;color:var(--text);cursor:pointer;transition:all .15s;
-  }
-  .opt:hover{border-color:var(--sky);}
-  .opt.selected{border-color:var(--sky);background:rgba(79,209,255,0.08);}
-  .opt.correct{border-color:var(--lime);background:rgba(196,241,53,0.14);color:var(--lime);}
-  .opt.wrong{border-color:var(--coral);background:rgba(255,93,115,0.14);color:var(--coral);}
-  .snackbar{font-size:13px;padding:10px 13px;border-radius:12px;margin-bottom:14px;display:none;}
-  .quiz-actions{display:flex;flex-direction:column;gap:10px;}
-
-  /* SUMMARY */
-  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:22px 0;}
-  .stat-box{background:var(--surface-2);border-radius:14px;padding:18px;text-align:center;}
-  .stat-box .num{font-family:'JetBrains Mono';font-size:28px;font-weight:700;}
-  .stat-box .lbl{font-size:12px;color:var(--text-muted);margin-top:4px;}
-
-  .screen{display:none;}
-  .screen.active{display:block;}
-
-  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
-  @media (max-width:480px){
-    .card{padding:24px;}
-
-    .lang-trigger{display:flex;}
-    .lang-options{
-      display:none;position:absolute;top:calc(100% + 8px);right:0;
-      flex-direction:column;gap:2px;min-width:100px;
-      padding:6px;border-radius:12px;
-      box-shadow:0 16px 32px -12px rgba(0,0,0,0.6);z-index:60;
-    }
-    .lang-options.open{display:flex;}
-    .lang-options button{text-align:left;padding:8px 10px;border-radius:8px;}
-  }
-</style>
+<link rel="stylesheet" href="assets/app.css">
+<script src="assets/i18n.js" defer></script>
+<script src="assets/config.js" defer></script>
+<script src="assets/vendor/supabase-js-2.111.0.js" defer></script>
+<script src="assets/app.js" defer></script>
 </head>
 <body>
 
+<div class="toast-container" id="toast-container" role="status" aria-live="polite"></div>
+
 <nav>
   <div class="wrap">
-    <div class="brand"><span class="brand-mark">S</span>Sharpet</div>
-    <div style="display:flex;align-items:center;gap:14px;">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">S</span>Sharpet</a>
+    <div class="nav-right">
       <div class="lang-switch" id="lang-switch">
-        <button type="button" class="lang-trigger" id="lang-trigger" onclick="toggleLangMenu(event)" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>
+        <button type="button" class="lang-trigger" id="lang-trigger" data-action="toggle-lang-menu" aria-haspopup="true" aria-expanded="false" aria-label="Change language">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>
           <span class="lang-trigger-label">EN</span>
         </button>
         <div class="lang-options" id="lang-options">
-          <button type="button" data-lang="en" onclick="setLang('en')">EN</button>
-          <button type="button" data-lang="de" onclick="setLang('de')">DE</button>
-          <button type="button" data-lang="cs" onclick="setLang('cs')">CZ</button>
+          <button type="button" data-lang="en" data-action="set-lang">EN</button>
+          <button type="button" data-lang="de" data-action="set-lang">DE</button>
+          <button type="button" data-lang="cs" data-action="set-lang">CZ</button>
         </div>
       </div>
-      <span class="exit-link mono" id="user-badge" style="display:none;"></span>
-      <a class="exit-link" href="index.html" data-i18n="exit_home">Exit to home</a>
+      <div class="profile-menu is-hidden" id="profile-menu">
+        <button type="button" class="profile-trigger" data-action="toggle-profile-menu" aria-haspopup="true" aria-expanded="false">
+          <span class="profile-avatar" id="nav-avatar" aria-hidden="true"></span>
+          <span id="nav-nickname"></span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="profile-options" id="profile-options">
+          <button type="button" data-action="go-setup" data-i18n="home_play">Play quiz</button>
+          <button type="button" data-action="log-out" data-i18n="home_logout">Log out</button>
+        </div>
+      </div>
+      <button type="button" class="exit-link" data-action="exit-home" data-i18n="exit_home">Exit to home</button>
     </div>
   </div>
 </nav>
 
-<main>
-  <div class="card">
+<main id="main-area">
+  <div class="card" id="main-card">
 
     <!-- LANDING -->
     <div class="screen" id="screen-landing">
-      <div class="icon-badge">🧠</div>
+      <div class="icon-badge" aria-hidden="true">🧠</div>
       <div class="center">
-        <h2 style="font-size:22px;" data-i18n="landing_title">Ready when you are.</h2>
+        <h2 class="card-title-lg" data-i18n="landing_title">Ready when you are.</h2>
         <p class="lead" data-i18n="landing_lead">Play as a guest right now, or log in to save your streaks and stats.</p>
       </div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <button class="btn btn-primary" onclick="goSetup()" data-i18n="landing_guest">Continue as guest →</button>
-        <button class="btn" onclick="goLogin()" data-i18n="landing_login">Log in</button>
+      <div class="stack">
+        <button class="btn btn-primary" data-action="go-setup" data-i18n="landing_guest">Start quiz →</button>
+        <button class="btn" data-action="go-login" data-i18n="landing_login">Log in</button>
       </div>
     </div>
 
-    <!-- LOGIN -->
+    <!-- LOGIN / SIGN UP -->
     <div class="screen" id="screen-login">
       <div class="center">
-        <div class="icon-badge" style="background:rgba(79,209,255,0.12);">👤</div>
-        <h2 style="font-size:20px;" id="login-title" data-i18n="login_title">Log in</h2>
+        <div class="icon-badge sky" aria-hidden="true">👤</div>
+        <h2 class="card-title" id="login-title" data-i18n="login_title">Log in</h2>
         <p class="lead" id="login-sub" data-i18n="login_sub">Track your streaks, history, and where you rank.</p>
       </div>
-      <div class="field">
-        <span class="field-label" data-i18n="field_email">Email</span>
-        <input id="login-email" type="email" placeholder="you@company.com" style="width:100%;" />
+      <form id="login-form" novalidate>
+        <div class="field is-hidden" id="login-nickname-field">
+          <label class="field-label" for="login-nickname" data-i18n="field_nickname">Nickname</label>
+          <input id="login-nickname" name="nickname" type="text" autocomplete="nickname" maxlength="32" placeholder="e.g. quiz_master" />
+          <p class="field-error" id="login-nickname-error"></p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="login-email" data-i18n="field_email">Email</label>
+          <input id="login-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@company.com" />
+          <p class="field-error" id="login-email-error"></p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="login-password" data-i18n="field_password">Password</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" maxlength="128" placeholder="••••••••" />
+          <ul class="pw-rules is-hidden" id="login-pw-rules">
+            <li data-rule="length" data-i18n="pw_rule_length">At least 10 characters</li>
+            <li data-rule="case" data-i18n="pw_rule_case">Upper and lower case</li>
+            <li data-rule="digit" data-i18n="pw_rule_digit">A number</li>
+            <li data-rule="symbol" data-i18n="pw_rule_symbol">A symbol</li>
+          </ul>
+          <p class="field-error" id="login-password-error"></p>
+        </div>
+        <p class="error-text" id="login-error" role="alert"></p>
+        <button class="btn btn-primary" id="login-submit" type="submit" data-i18n="login_submit">Log in</button>
+      </form>
+      <p class="hint" id="login-forgot"><button type="button" class="hint-link" data-action="go-reset-request" data-i18n="login_forgot">Forgot your password?</button></p>
+      <p class="hint"><button type="button" class="hint-link" id="login-toggle" data-action="toggle-login-mode" data-i18n="login_toggle_to_signup">Need an account? Sign up</button></p>
+    </div>
+
+    <!-- RESET PASSWORD: REQUEST -->
+    <div class="screen" id="screen-reset-request">
+      <div class="center">
+        <div class="icon-badge sky" aria-hidden="true">🔑</div>
+        <h2 class="card-title" data-i18n="reset_request_title">Reset your password</h2>
+        <p class="lead" data-i18n="reset_request_sub">Enter the email on your account and we'll send you a link to set a new password.</p>
       </div>
-      <div class="field">
-        <span class="field-label" data-i18n="field_password">Password</span>
-        <input id="login-password" type="password" placeholder="••••••••" style="width:100%;" />
+      <form id="reset-request-form" novalidate>
+        <div class="field">
+          <label class="field-label" for="reset-request-email" data-i18n="field_email">Email</label>
+          <input id="reset-request-email" name="email" type="email" autocomplete="email" maxlength="254" placeholder="you@company.com" />
+          <p class="field-error" id="reset-request-email-error"></p>
+        </div>
+        <p class="error-text" id="reset-request-error" role="alert"></p>
+        <button class="btn btn-primary" id="reset-request-submit" type="submit" data-i18n="reset_request_submit">Send reset link</button>
+      </form>
+      <p class="hint mt-2"><button type="button" class="hint-link" data-action="go-login" data-i18n="reset_request_back">← Back to log in</button></p>
+    </div>
+
+    <!-- RESET PASSWORD: SET NEW PASSWORD -->
+    <div class="screen" id="screen-reset-password">
+      <div class="center">
+        <div class="icon-badge lime" aria-hidden="true">🔒</div>
+        <h2 class="card-title" data-i18n="reset_password_title">Choose a new password</h2>
+        <p class="lead" data-i18n="reset_password_sub">Your reset link checked out. Set a new password to finish.</p>
       </div>
-      <p class="error-text" id="login-error"></p>
-      <button class="btn btn-primary" id="login-submit" onclick="submitLogin()" data-i18n="login_submit">Log in</button>
-      <p class="hint" id="login-toggle" style="cursor:pointer;text-decoration:underline;" onclick="toggleLoginMode()" data-i18n="login_toggle_to_signup">Need an account? Sign up</p>
-      <p class="hint" style="cursor:pointer;text-decoration:underline;margin-top:2px;" onclick="showOnly('landing')" data-i18n="login_back">← Back</p>
+      <form id="reset-password-form" novalidate>
+        <div class="field">
+          <label class="field-label" for="reset-password-new" data-i18n="field_new_password">New password</label>
+          <input id="reset-password-new" name="new-password" type="password" autocomplete="new-password" maxlength="128" placeholder="••••••••" />
+          <ul class="pw-rules" id="reset-pw-rules">
+            <li data-rule="length" data-i18n="pw_rule_length">At least 10 characters</li>
+            <li data-rule="case" data-i18n="pw_rule_case">Upper and lower case</li>
+            <li data-rule="digit" data-i18n="pw_rule_digit">A number</li>
+            <li data-rule="symbol" data-i18n="pw_rule_symbol">A symbol</li>
+          </ul>
+          <p class="field-error" id="reset-password-new-error"></p>
+        </div>
+        <div class="field">
+          <label class="field-label" for="reset-password-confirm" data-i18n="field_confirm_password">Confirm new password</label>
+          <input id="reset-password-confirm" name="confirm-password" type="password" autocomplete="new-password" maxlength="128" placeholder="••••••••" />
+          <p class="field-error" id="reset-password-confirm-error"></p>
+        </div>
+        <p class="error-text" id="reset-password-error" role="alert"></p>
+        <button class="btn btn-primary" id="reset-password-submit" type="submit" data-i18n="reset_password_submit">Update password</button>
+      </form>
     </div>
 
     <!-- SETUP -->
     <div class="screen" id="screen-setup">
       <span class="eyebrow">● <span data-i18n="setup_eyebrow">Set up your game</span></span>
+      <p class="hint" id="setup-hint" data-i18n="setup_hint_pick">Pick at least one domain to continue</p>
       <div class="field">
-        <span class="field-label"><span data-i18n="field_domains">Domains</span> <span style="color:var(--text-muted);font-weight:400;" data-i18n="field_domains_hint">— up to 5</span></span>
+        <span class="field-label"><span data-i18n="field_domains">Domains</span> <span class="muted" data-i18n="field_domains_hint">— up to 5</span></span>
         <div class="pill-grid" id="domain-pills"></div>
       </div>
-      <div class="field">
-        <span class="field-label" data-i18n="field_answers">Answers per question</span>
-        <select id="sel-answers">
-          <option value="2" data-i18n="opt_2">2 options</option>
-          <option value="3" selected data-i18n="opt_3">3 options</option>
-          <option value="4" data-i18n="opt_4">4 options</option>
-        </select>
+      <div class="field-row">
+        <div class="field">
+          <label class="field-label" for="sel-answers" data-i18n="field_answers">Answers per question</label>
+          <select id="sel-answers">
+            <option value="2" data-i18n="opt_2">2 options</option>
+            <option value="3" selected data-i18n="opt_3">3 options</option>
+            <option value="4" data-i18n="opt_4">4 options</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="sel-count" data-i18n="field_count">Number of questions</label>
+          <select id="sel-count">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
       </div>
-      <div class="field">
-        <span class="field-label" data-i18n="field_count">Number of questions</span>
-        <select id="sel-count">
-          <option value="5">5</option>
-          <option value="10" selected>10</option>
-          <option value="15">15</option>
-          <option value="all" data-i18n="opt_all">All</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" id="start-btn" onclick="goCaptcha()" disabled data-i18n="setup_start">Start →</button>
-      <p class="hint" id="setup-hint" data-i18n="setup_hint_pick">Pick at least one domain to continue</p>
-      <p class="hint" style="cursor:pointer;text-decoration:underline;text-align:center;margin-top:6px;" onclick="window.location.href='index.html'" data-i18n="exit_home">Exit to home</p>
+      <button class="btn btn-primary" id="start-btn" data-action="go-captcha" disabled data-i18n="setup_start">Start →</button>
+      <p class="hint"><button type="button" class="hint-link" data-action="exit-home" data-i18n="exit_home">Exit to home</button></p>
     </div>
 
     <!-- CAPTCHA -->
     <div class="screen" id="screen-captcha">
       <div class="center">
-        <div class="icon-badge" style="background:rgba(79,209,255,0.12);">🛡️</div>
-        <h2 style="font-size:19px;" data-i18n="captcha_title">Quick check</h2>
-        <p class="lead" style="margin-bottom:10px;" data-i18n="captcha_sub">Just making sure you're human.</p>
+        <div class="icon-badge sky" aria-hidden="true">🛡️</div>
+        <h2 class="card-title-sm" data-i18n="captcha_title">Quick check</h2>
+        <p class="lead" data-i18n="captcha_sub">Just making sure you're human.</p>
       </div>
-      <p class="captcha-box mono" id="captcha-question"></p>
-      <input id="captcha-input" type="text" inputmode="numeric" data-i18n-placeholder="captcha_placeholder" placeholder="Your answer" />
-      <p class="error-text" id="captcha-error"></p>
-      <button class="btn btn-primary" onclick="checkCaptcha()" data-i18n="captcha_verify">Verify</button>
+      <form id="captcha-form" novalidate>
+        <p class="captcha-box mono" id="captcha-question"></p>
+        <label class="sr-only" for="captcha-input" data-i18n="captcha_placeholder">Your answer</label>
+        <input id="captcha-input" type="text" inputmode="numeric" autocomplete="off" maxlength="4" data-i18n-placeholder="captcha_placeholder" placeholder="Your answer" />
+        <p class="error-text" id="captcha-error" role="alert"></p>
+        <button class="btn btn-primary" type="submit" data-i18n="captcha_verify">Verify</button>
+      </form>
     </div>
 
     <!-- QUIZ -->
     <div class="screen" id="screen-quiz">
       <div class="quiz-top">
         <span id="q-progress"></span>
-        <span class="score-pill" id="q-score"></span>
+        <div class="quiz-top-right">
+          <span class="score-pill" id="q-score"></span>
+          <button type="button" class="link-muted" data-action="end-game" data-i18n="end_game">End game</button>
+        </div>
       </div>
       <p class="q-text" id="q-text"></p>
       <div class="opts" id="q-opts"></div>
-      <div class="snackbar mono" id="snackbar"></div>
+      <button type="button" class="report-link" id="report-btn" data-action="report-question" data-i18n="report">⚑ Report question as incorrect</button>
+      <div class="snackbar mono" id="snackbar" role="status" aria-live="polite"></div>
       <div class="quiz-actions">
-        <button class="btn btn-primary" id="validate-btn" onclick="validateAnswer()" data-i18n="validate">Validate</button>
+        <button class="btn btn-primary" id="validate-btn" data-action="validate" data-i18n="validate">Validate</button>
         <div class="btn-row">
-          <button class="btn" id="back-btn" onclick="prevQuestion()" data-i18n="back">← Back</button>
-          <button class="btn" id="next-btn" onclick="nextQuestion()" data-i18n="next">Next →</button>
-        </div>
-        <div class="btn-row">
-          <button class="btn btn-danger-ghost" onclick="reportQuestion()" data-i18n="report">⚑ Report question</button>
-          <button class="btn btn-muted-ghost" onclick="endGame()" data-i18n="end_game">End game</button>
+          <button class="btn" id="back-btn" data-action="prev-question" data-i18n="back">← Back</button>
+          <button class="btn" id="next-btn" data-action="next-question" data-i18n="next">Next →</button>
         </div>
       </div>
     </div>
@@ -302,492 +221,68 @@
     <!-- SUMMARY -->
     <div class="screen" id="screen-summary">
       <div class="center">
-        <div class="icon-badge">🎉</div>
-        <h2 style="font-size:22px;" data-i18n="summary_title">Game over</h2>
+        <div class="icon-badge" aria-hidden="true">🎉</div>
+        <h2 class="card-title-lg" data-i18n="summary_title">Game over</h2>
         <p class="lead" data-i18n="summary_lead">Here's how you did.</p>
       </div>
       <div class="stat-grid">
-        <div class="stat-box"><div class="num" id="sum-correct" style="color:var(--lime);"></div><div class="lbl" data-i18n="stat_correct">Correct</div></div>
-        <div class="stat-box"><div class="num" id="sum-accuracy" style="color:var(--sky);"></div><div class="lbl" data-i18n="stat_accuracy">Accuracy</div></div>
+        <div class="stat-box"><div class="num lime" id="sum-correct"></div><div class="lbl" data-i18n="stat_correct">Correct</div></div>
+        <div class="stat-box"><div class="num sky" id="sum-accuracy"></div><div class="lbl" data-i18n="stat_accuracy">Accuracy</div></div>
       </div>
-      <p class="hint" id="summary-note" style="margin-bottom:18px;"></p>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <button class="btn btn-primary" onclick="resetApp()" data-i18n="play_again">Play again</button>
-        <button class="btn" id="view-stats-btn" style="display:none;" onclick="showOnly('stats')" data-i18n="view_stats">View my stats</button>
+      <p class="hint mb-18" id="summary-note"></p>
+      <div class="stack">
+        <button class="btn btn-primary" data-action="play-again" data-i18n="play_again">Play again</button>
+        <button class="btn is-hidden" id="view-stats-btn" data-action="view-stats" data-i18n="view_stats">View my stats</button>
       </div>
-    </div>
-
-    <!-- STATS (registered users) -->
-    <div class="screen" id="screen-stats">
-      <span class="eyebrow">● <span data-i18n="stats_eyebrow">Your activity</span></span>
-      <h2 style="font-size:20px;margin-bottom:16px;" data-i18n="stats_title">Stats &amp; history</h2>
-      <div class="stat-grid" style="margin-top:0;">
-        <div class="stat-box"><div class="num" style="color:var(--lime);">86%</div><div class="lbl" data-i18n="stat_accuracy_30d">accuracy, last 30 days</div></div>
-        <div class="stat-box"><div class="num" style="color:var(--sky);">142</div><div class="lbl" data-i18n="stat_questions_answered">questions answered</div></div>
-      </div>
-      <div style="margin:18px 0 22px;">
-        <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-muted);margin-bottom:8px;">
-          <span style="width:90px;" data-i18n="domain_security">Security</span>
-          <div style="flex:1;height:6px;border-radius:6px;background:rgba(245,243,255,0.08);overflow:hidden;"><div style="height:100%;width:92%;background:var(--lime);border-radius:6px;"></div></div>
-          <span class="mono">23/25</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-muted);margin-bottom:8px;">
-          <span style="width:90px;" data-i18n="domain_networking">Networking</span>
-          <div style="flex:1;height:6px;border-radius:6px;background:rgba(245,243,255,0.08);overflow:hidden;"><div style="height:100%;width:78%;background:var(--sky);border-radius:6px;"></div></div>
-          <span class="mono">18/23</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-muted);">
-          <span style="width:90px;" data-i18n="domain_databases">Databases</span>
-          <div style="flex:1;height:6px;border-radius:6px;background:rgba(245,243,255,0.08);overflow:hidden;"><div style="height:100%;width:65%;background:var(--coral);border-radius:6px;"></div></div>
-          <span class="mono">13/20</span>
-        </div>
-      </div>
-      <span class="field-label" data-i18n="stats_friends">Friends</span>
-      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:22px;">
-        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:13px;">
-          <span>Priya K.</span><span class="mono" style="color:var(--lime);">91%</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:13px;">
-          <span>Marcus T.</span><span class="mono" style="color:var(--sky);">84%</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:13px;">
-          <span>You</span><span class="mono" style="color:var(--coral);">86%</span>
-        </div>
-      </div>
-      <button class="btn" onclick="resetApp()" data-i18n="stats_back">← Back to home</button>
     </div>
 
   </div>
+
+  <!-- HOME (dashboard) — a full page, not the modal card -->
+  <div class="screen dashboard-page" id="screen-home">
+    <div class="home-head">
+      <div>
+        <h2 data-i18n="home_welcome">Welcome back</h2>
+        <p class="streak-line" id="home-streak" data-i18n="home_streak_empty">No streak yet — play your first quiz today.</p>
+      </div>
+      <button class="btn btn-primary btn-auto" data-action="go-setup" data-i18n="home_play">Play quiz →</button>
+    </div>
+
+    <div class="home-stat-grid">
+      <div class="stat-box"><div class="num" id="stat-7d">–</div><div class="lbl" data-i18n="home_stat_7d">Accuracy (7d)</div></div>
+      <div class="stat-box"><div class="num" id="stat-30d">–</div><div class="lbl" data-i18n="home_stat_30d">Accuracy (30d)</div></div>
+      <div class="stat-box"><div class="num" id="stat-streak">–</div><div class="lbl" data-i18n="home_stat_streak">Longest streak</div></div>
+      <div class="stat-box"><div class="num" id="stat-total">–</div><div class="lbl" data-i18n="home_stat_total">Total answered</div></div>
+    </div>
+
+    <div class="dash-grid-2">
+      <div class="dash-card">
+        <div class="dash-card-head"><span class="dash-title" data-i18n="home_progress">Progress over time</span></div>
+        <div id="progress-chart"><div class="dash-empty dash-empty-chart" data-i18n="home_progress_empty">Your accuracy trend will show up here after a few sessions.</div></div>
+      </div>
+      <div class="dash-card">
+        <div class="dash-card-head"><span class="dash-title" data-i18n="home_domains">Weakest domains</span></div>
+        <div id="domains-list"><div class="dash-empty" data-i18n="home_domains_empty">Play across a few domains to see a breakdown.</div></div>
+      </div>
+    </div>
+
+    <div class="dash-card mb-12">
+      <div class="dash-card-head">
+        <span class="dash-title" data-i18n="home_history">Session history</span>
+        <button type="button" class="dash-link" id="history-view-all" data-action="history-view-all" disabled data-i18n="home_view_all">View all</button>
+      </div>
+      <div id="history-list"><div class="dash-empty" data-i18n="home_history_empty">No sessions yet.</div></div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-card-head">
+        <span class="dash-title" data-i18n="home_reported">Reported questions</span>
+        <button type="button" class="dash-link" id="reported-view-all" data-action="reported-view-all" disabled data-i18n="home_view_all">View all</button>
+      </div>
+      <div id="reported-list"><div class="dash-empty" data-i18n="home_reported_empty">You haven't reported any questions.</div></div>
+    </div>
+  </div>
 </main>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script>
-  // ---- Supabase config ----
-  // 1. Create a project at https://supabase.com
-  // 2. Run supabase-schema.sql in the SQL editor
-  // 3. Paste your Project URL and anon public key below (Project Settings > API)
-  var SUPABASE_URL = 'https://phpyzytedzkitbmrefca.supabase.co';
-  var SUPABASE_ANON_KEY = 'sb_publishable_xvMowpzAzl1Cw2CB2Dlndw_vr_Z8woi';
-  var supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-</script>
-<script>
-var DOMAINS = [];         // loaded from Supabase at startup: [{id, name, color}]
-var QUESTION_BANK = [];   // loaded from Supabase per game: [{id, text, opts, correct}]
-
-var state = { domains:[], numAnswers:3, numQuestions:10, questions:[], current:0, selected:null, validated:false, correctCount:0, answered:[], captchaAnswer:0, sessionId:null };
-var session = { isLoggedIn:false, email:null, userId:null, isSignupMode:false };
-
-function toggleLoginMode(){
-  session.isSignupMode = !session.isSignupMode;
-  document.getElementById('login-title').textContent = session.isSignupMode ? t('login_title_signup') : t('login_title');
-  document.getElementById('login-sub').textContent = session.isSignupMode ? t('login_sub_signup') : t('login_sub');
-  document.getElementById('login-submit').textContent = session.isSignupMode ? t('login_submit_signup') : t('login_submit');
-  document.getElementById('login-toggle').textContent = session.isSignupMode ? t('login_toggle_to_login') : t('login_toggle_to_signup');
-  document.getElementById('login-error').textContent = '';
-}
-
-function goLogin(){ showOnly('login'); }
-
-async function submitLogin(){
-  var email = document.getElementById('login-email').value.trim();
-  var password = document.getElementById('login-password').value;
-  var errEl = document.getElementById('login-error');
-  var submitBtn = document.getElementById('login-submit');
-  if(!email || !email.includes('@')){ errEl.textContent = t('login_err_email'); return; }
-  if(!password || password.length < 6){ errEl.textContent = t('login_err_password'); return; }
-  errEl.textContent = '';
-  submitBtn.disabled = true;
-
-  var result = session.isSignupMode
-    ? await supabaseClient.auth.signUp({ email: email, password: password })
-    : await supabaseClient.auth.signInWithPassword({ email: email, password: password });
-
-  submitBtn.disabled = false;
-  submitBtn.textContent = session.isSignupMode ? t('login_submit_signup') : t('login_submit');
-
-  if(result.error){
-    errEl.textContent = result.error.message;
-    return;
-  }
-  if(session.isSignupMode && !result.data.session){
-    errEl.textContent = '';
-    document.getElementById('login-sub').textContent = t('login_check_inbox');
-    toggleLoginMode();
-    return;
-  }
-
-  session.isLoggedIn = true;
-  session.email = email;
-  session.userId = result.data.user ? result.data.user.id : null;
-  var badge = document.getElementById('user-badge');
-  badge.style.display = 'inline';
-  badge.textContent = email;
-  goSetup();
-}
-
-function showOnly(id){
-  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
-  document.getElementById('screen-'+id).classList.add('active');
-}
-
-async function loadDomains(){
-  var wrap = document.getElementById('domain-pills');
-  wrap.innerHTML = '<span class="hint">…</span>';
-  var lang = getLang();
-  var { data, error } = await supabaseClient
-    .from('domain_translations')
-    .select('domain_id, name, domains!inner(id,color)')
-    .eq('language_code', lang)
-    .order('domain_id');
-
-  if(error || !data || data.length === 0){
-    wrap.innerHTML = '';
-    document.getElementById('setup-hint').textContent = t('setup_hint_error');
-    return;
-  }
-  DOMAINS = data.map(function(row){ return { id: row.domain_id, name: row.name, color: row.domains.color }; });
-  renderDomainPills();
-  updateSetupState();
-}
-
-function renderDomainPills(){
-  var wrap = document.getElementById('domain-pills');
-  wrap.innerHTML = '';
-  DOMAINS.forEach(function(d){
-    var pill = document.createElement('button');
-    pill.className = 'pill' + (state.domains.indexOf(d.id) !== -1 ? ' active' : '');
-    pill.textContent = d.name;
-    pill.type = 'button';
-    pill.onclick = function(){ toggleDomain(d.id); };
-    wrap.appendChild(pill);
-  });
-  var allPill = document.createElement('button');
-  allPill.type = 'button';
-  allPill.className = 'pill' + (state.domains.length === DOMAINS.length && DOMAINS.length > 0 ? ' active' : '');
-  allPill.textContent = t('all_domains');
-  allPill.onclick = function(){
-    state.domains = state.domains.length === DOMAINS.length ? [] : DOMAINS.map(function(d){ return d.id; });
-    renderDomainPills();
-    updateSetupState();
-  };
-  wrap.appendChild(allPill);
-}
-
-function toggleDomain(id){
-  var idx = state.domains.indexOf(id);
-  if(idx === -1){
-    if(state.domains.length >= 5) return;
-    state.domains.push(id);
-  } else {
-    state.domains.splice(idx, 1);
-  }
-  renderDomainPills();
-  updateSetupState();
-}
-
-function updateSetupState(){
-  var btn = document.getElementById('start-btn');
-  var hint = document.getElementById('setup-hint');
-  if(state.domains.length > 0){
-    btn.disabled = false;
-    hint.textContent = t('setup_hint_selected', {n: state.domains.length});
-  } else {
-    btn.disabled = true;
-    hint.textContent = t('setup_hint_pick');
-  }
-}
-
-function goSetup(){ showOnly('setup'); }
-
-function goCaptcha(){
-  showOnly('captcha');
-  var a = Math.floor(Math.random()*8)+2, b = Math.floor(Math.random()*8)+1;
-  state.captchaAnswer = a+b;
-  document.getElementById('captcha-question').textContent = a + ' + ' + b + ' = ?';
-  document.getElementById('captcha-input').value = '';
-  document.getElementById('captcha-error').textContent = '';
-  document.getElementById('captcha-input').focus();
-}
-
-function checkCaptcha(){
-  var val = parseInt(document.getElementById('captcha-input').value, 10);
-  if(val === state.captchaAnswer){
-    startQuiz();
-  } else {
-    document.getElementById('captcha-error').textContent = t('captcha_error');
-    goCaptcha();
-  }
-}
-
-async function startQuiz(){
-  state.numAnswers = parseInt(document.getElementById('sel-answers').value, 10);
-  var countVal = document.getElementById('sel-count').value;
-  var lang = getLang();
-
-  var { data, error } = await supabaseClient
-    .from('question_translations')
-    .select('question_id, text, options, questions!inner(id,domain_id,correct_index,is_active)')
-    .eq('language_code', lang)
-    .eq('questions.is_active', true)
-    .in('questions.domain_id', state.domains);
-
-  if(error || !data){
-    alert(t('load_error'));
-    return;
-  }
-
-  // shuffle client-side so repeated plays don't always show the same order
-  for(var i = data.length - 1; i > 0; i--){
-    var j = Math.floor(Math.random() * (i + 1));
-    var tmp = data[i]; data[i] = data[j]; data[j] = tmp;
-  }
-
-  state.numQuestions = countVal === 'all' ? data.length : Math.min(parseInt(countVal,10), data.length);
-  state.questions = data.slice(0, state.numQuestions).map(function(row){
-    return { id: row.question_id, text: row.text, opts: row.options.slice(0, Math.max(state.numAnswers, 2)), correct: row.questions.correct_index };
-  });
-
-  state.current = 0;
-  state.correctCount = 0;
-  state.answered = new Array(state.questions.length).fill(null);
-  state.sessionId = null;
-
-  if(session.isLoggedIn){
-    var { data: sessionRow } = await supabaseClient.from('quiz_sessions').insert({
-      user_id: session.userId,
-      domain_ids: state.domains,
-      language_code: lang,
-      num_answer_options: state.numAnswers,
-      num_questions: state.questions.length
-    }).select().single();
-    if(sessionRow) state.sessionId = sessionRow.id;
-  }
-
-  showOnly('quiz');
-  renderQuestion();
-}
-
-function renderQuestion(){
-  var q = state.questions[state.current];
-  document.getElementById('q-progress').textContent = t('q_progress', {current: state.current+1, total: state.questions.length});
-  document.getElementById('q-score').textContent = t('q_score', {correct: state.correctCount, total: state.questions.length});
-  document.getElementById('q-text').textContent = q.text;
-
-  var optsWrap = document.getElementById('q-opts');
-  optsWrap.innerHTML = '';
-  optsWrap.style.pointerEvents = 'auto';
-
-  var prev = state.answered[state.current];
-  state.selected = prev ? prev.selected : null;
-  state.validated = !!prev;
-
-  q.opts.forEach(function(optText, i){
-    var div = document.createElement('div');
-    div.className = 'opt';
-    div.textContent = optText;
-    div.onclick = function(){ selectOption(i); };
-    optsWrap.appendChild(div);
-  });
-
-  document.getElementById('back-btn').style.visibility = state.current === 0 ? 'hidden' : 'visible';
-  document.getElementById('snackbar').style.display = 'none';
-
-  if(state.validated){ paintValidated(); } else { paintSelection(); }
-  updateNextButton();
-}
-
-function updateNextButton(){
-  var nextBtn = document.getElementById('next-btn');
-  var validateBtn = document.getElementById('validate-btn');
-  if(state.validated){
-    nextBtn.disabled = false;
-    nextBtn.style.opacity = '1';
-    validateBtn.style.display = 'none';
-  } else {
-    nextBtn.disabled = true;
-    nextBtn.style.opacity = '0.5';
-    validateBtn.style.display = 'block';
-  }
-}
-
-function selectOption(i){
-  if(state.validated) return;
-  state.selected = i;
-  paintSelection();
-}
-
-function paintSelection(){
-  var opts = document.getElementById('q-opts').children;
-  for(var i=0;i<opts.length;i++){
-    opts[i].classList.toggle('selected', i===state.selected);
-  }
-}
-
-function paintValidated(){
-  var q = state.questions[state.current];
-  var optsWrap = document.getElementById('q-opts');
-  var opts = optsWrap.children;
-  var rec = state.answered[state.current];
-  optsWrap.style.pointerEvents = 'none';
-  for(var i=0;i<opts.length;i++){
-    opts[i].classList.remove('selected');
-    if(i === q.correct){ opts[i].classList.add('correct'); }
-    else if(i === rec.selected){ opts[i].classList.add('wrong'); }
-  }
-  var sb = document.getElementById('snackbar');
-  sb.style.display = 'block';
-  if(rec.correct){
-    sb.style.background = 'rgba(196,241,53,0.14)'; sb.style.color = 'var(--lime)';
-    sb.textContent = t('correct_msg');
-  } else {
-    sb.style.background = 'rgba(255,93,115,0.14)'; sb.style.color = 'var(--coral)';
-    sb.textContent = t('wrong_msg');
-  }
-}
-
-function validateAnswer(){
-  if(state.selected === null || state.validated) return;
-  var q = state.questions[state.current];
-  var isCorrect = state.selected === q.correct;
-  state.answered[state.current] = {selected: state.selected, correct: isCorrect};
-  state.validated = true;
-  if(isCorrect) state.correctCount++;
-  document.getElementById('q-score').textContent = t('q_score', {correct: state.correctCount, total: state.questions.length});
-  paintValidated();
-  updateNextButton();
-
-  if(session.isLoggedIn && state.sessionId){
-    supabaseClient.from('quiz_answers').insert({
-      session_id: state.sessionId,
-      question_id: q.id,
-      selected_index: state.selected,
-      is_correct: isCorrect
-    });
-  }
-}
-
-function nextQuestion(){
-  if(!state.validated) return;
-  if(state.current < state.questions.length - 1){
-    state.current++;
-    renderQuestion();
-  } else {
-    endGame();
-  }
-}
-
-function prevQuestion(){
-  if(state.current > 0){
-    state.current--;
-    renderQuestion();
-  }
-}
-
-function reportQuestion(){
-  var q = state.questions[state.current];
-  supabaseClient.from('reported_questions').insert({
-    question_id: q.id,
-    user_id: session.isLoggedIn ? session.userId : null,
-    language_code: getLang(),
-    reason: 'None of the answers seemed correct'
-  });
-  var sb = document.getElementById('snackbar');
-  sb.style.display = 'block';
-  sb.style.background = 'rgba(79,209,255,0.14)'; sb.style.color = 'var(--sky)';
-  sb.textContent = t('reported_msg');
-}
-
-function endGame(){
-  var answeredCount = state.answered.filter(function(a){return a !== null;}).length;
-  var accuracy = answeredCount > 0 ? Math.round((state.correctCount/answeredCount)*100) : 0;
-  document.getElementById('sum-correct').textContent = state.correctCount + '/' + answeredCount;
-  document.getElementById('sum-accuracy').textContent = accuracy + '%';
-  var note = document.getElementById('summary-note');
-  var statsBtn = document.getElementById('view-stats-btn');
-  if(session.isLoggedIn){
-    note.textContent = t('summary_note_saved');
-    statsBtn.style.display = 'block';
-    if(state.sessionId){
-      supabaseClient.from('quiz_sessions').update({
-        correct_count: state.correctCount,
-        total_answered: answeredCount,
-        ended_at: new Date().toISOString()
-      }).eq('id', state.sessionId);
-    }
-  } else {
-    note.textContent = t('summary_note_guest');
-    statsBtn.style.display = 'none';
-  }
-  showOnly('summary');
-}
-
-function resetApp(){
-  state.domains = [];
-  renderDomainPills();
-  updateSetupState();
-  showOnly('landing');
-}
-
-// init
-window.onLangChange = async function(){
-  // re-apply signup/login mode text (these override the default data-i18n text)
-  if(document.getElementById('screen-login').classList.contains('active')){
-    document.getElementById('login-title').textContent = session.isSignupMode ? t('login_title_signup') : t('login_title');
-    document.getElementById('login-sub').textContent = session.isSignupMode ? t('login_sub_signup') : t('login_sub');
-    document.getElementById('login-submit').textContent = session.isSignupMode ? t('login_submit_signup') : t('login_submit');
-    document.getElementById('login-toggle').textContent = session.isSignupMode ? t('login_toggle_to_login') : t('login_toggle_to_signup');
-  }
-  // domain pills and setup hint are rendered dynamically, not via data-i18n
-  if(DOMAINS.length){ loadDomains(); }
-  // if mid-quiz, re-fetch question text/options for the current question set in the new language
-  if(document.getElementById('screen-quiz').classList.contains('active') && state.questions.length){
-    await translateQuizQuestions();
-    renderQuestion();
-  }
-};
-
-async function translateQuizQuestions(){
-  var lang = getLang();
-  var ids = state.questions.map(function(q){ return q.id; });
-  var { data, error } = await supabaseClient
-    .from('question_translations')
-    .select('question_id, text, options')
-    .eq('language_code', lang)
-    .in('question_id', ids);
-  if(error || !data) return;
-  var byId = {};
-  data.forEach(function(row){ byId[row.question_id] = row; });
-  state.questions.forEach(function(q){
-    var row = byId[q.id];
-    if(row){
-      q.text = row.text;
-      q.opts = row.options.slice(0, Math.max(state.numAnswers, 2));
-    }
-  });
-}
-
-async function init(){
-  updateSetupState();
-
-  var { data: { session: existingSession } } = await supabaseClient.auth.getSession();
-  if(existingSession){
-    session.isLoggedIn = true;
-    session.email = existingSession.user.email;
-    session.userId = existingSession.user.id;
-    var badge = document.getElementById('user-badge');
-    badge.style.display = 'inline';
-    badge.textContent = session.email;
-  }
-
-  await loadDomains();
-
-  var params = new URLSearchParams(window.location.search);
-  if(params.get('mode') === 'guest'){ showOnly('setup'); }
-  else if(params.get('mode') === 'login'){ showOnly(session.isLoggedIn ? 'setup' : 'login'); }
-  else { showOnly('landing'); }
-}
-init();
-</script>
 
 </body>
 </html>
