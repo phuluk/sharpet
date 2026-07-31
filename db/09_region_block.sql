@@ -252,26 +252,38 @@ grant execute on function public.region_status() to anon, authenticated;
 alter table public.questions add column if not exists is_guest_demo boolean not null default false;
 create index if not exists idx_questions_guest_demo on public.questions(is_guest_demo) where is_guest_demo;
 
--- Seed roughly 100 questions, spread across domains rather than just "the
--- first 100 by id" (which could land entirely inside one or two domains
--- depending on seed order and leave guests with an empty pool for anything
--- else they pick). Re-running this is a no-op once a pool already exists —
--- it only seeds when nothing is marked yet, so an admin's later curation
--- via the question editor's "Guest demo pool" checkbox is never overwritten.
+-- Seed at least 10 guest-demo questions per domain, picked at random rather
+-- than "the first 10 by id" (which would show every guest the exact same
+-- set every time). A guest choosing a single domain still gets a real pool
+-- to draw from, not a handful of repeats.
+--
+-- This is a per-domain top-up, not a one-shot seed: a domain that already
+-- has >= 10 flagged rows is left untouched, so an admin's later curation via
+-- the question editor's "Guest demo pool" checkbox is never overwritten or
+-- reduced. That also makes it safe — and necessary — to re-run this block
+-- after seeding new questions (e.g. a fresh db/03_seed_questions load), so
+-- newly added questions are picked up for any domain that was still short.
 do $$
+declare
+  d      record;
+  needed int;
 begin
-  if not exists (select 1 from public.questions where is_guest_demo) then
-    with ranked as (
-      select id, row_number() over (partition by domain_id order by id) as rn
+  for d in select id from public.domains loop
+    select count(*) into needed
       from public.questions
-      where is_active
-    )
-    update public.questions q
-       set is_guest_demo = true
-      from ranked r
-     where q.id = r.id
-       and r.rn <= ceiling(100.0 / greatest((select count(*) from public.domains), 1));
-  end if;
+     where domain_id = d.id and is_active and is_guest_demo;
+    needed := 10 - needed;
+    if needed > 0 then
+      update public.questions
+         set is_guest_demo = true
+       where id in (
+         select id from public.questions
+          where domain_id = d.id and is_active and not is_guest_demo
+          order by random()
+          limit needed
+       );
+    end if;
+  end loop;
 end $$;
 
 -- ------------------------------------------------------------
@@ -472,7 +484,7 @@ begin
   end if;
 
   return query
-    select b.id, b.cidr::text, b.reason, u.email, b.created_at
+    select b.id, b.cidr::text, b.reason, u.email::text, b.created_at
     from public.ip_bans b
     left join auth.users u on u.id = b.created_by
     order by b.created_at desc;

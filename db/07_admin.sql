@@ -552,7 +552,7 @@ begin
   end if;
 
   return query
-    select p.id, u.email, p.display_name, p.is_admin, p.is_banned,
+    select p.id, u.email::text, p.display_name, p.is_admin, p.is_banned,
            p.created_at, u.last_sign_in_at,
            (select count(*) from public.quiz_sessions s where s.user_id = p.id) as quizzes_played,
            (select count(*) from public.quiz_answers qa
@@ -637,7 +637,7 @@ begin
   end if;
 
   return query
-    select r.id, r.question_id, qt.text, u.email, r.reason, r.resolved, r.created_at
+    select r.id, r.question_id, qt.text, u.email::text, r.reason, r.resolved, r.created_at
     from public.reported_questions r
     left join public.question_translations qt
       on qt.question_id = r.question_id and qt.language_code = 'en'
@@ -1067,7 +1067,7 @@ begin
   end if;
 
   return query
-    select a.id, u.email, a.action, a.target, a.details, a.created_at
+    select a.id, u.email::text, a.action, a.target, a.details, a.created_at
     from public.admin_audit_log a
     left join auth.users u on u.id = a.actor
     order by a.created_at desc

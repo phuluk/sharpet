@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SOURCES = [
     ROOT / "archive" / "input_questions" / "quiz_questions_part1.json",
     ROOT / "archive" / "input_questions" / "quiz_questions_part2.json",
+    ROOT / "archive" / "input_questions" / "quiz_questions_part3.json",
 ]
 OUT_DIR = ROOT / "db" / "03_seed_questions"
 

@@ -101,13 +101,15 @@ requirement later, importing GeoLite2 into `private.country_continent`-style
 tables keyed by CIDR range (rather than a header) is the way to get there.
 
 **Guest demo pool.** Unregistered players only ever draw from questions
-flagged `questions.is_guest_demo` — roughly 100, spread across domains, set
-once by `09_region_block.sql` and adjustable afterwards from the question
-editor's "In the guest demo pool" checkbox. A registered account still sees
-the full active question bank. This closes the "brute-force the whole
-5 000-question answer key as a guest" scenario `06_hardening.sql`'s rate
-limit only slowed down before — a guest's answer-key exposure is now capped
-at the demo pool's size, permanently, not just rate-limited.
+flagged `questions.is_guest_demo` — at least 10 per domain, topped up by
+`09_region_block.sql` (safe to re-run after reseeding: it only adds rows for
+a domain still short of 10, never removes any), and adjustable afterwards
+from the question editor's "In the guest demo pool" checkbox. A registered
+account still sees the full active question bank. This closes the
+"brute-force the whole 5 000-question answer key as a guest" scenario
+`06_hardening.sql`'s rate limit only slowed down before — a guest's
+answer-key exposure is now capped at the demo pool's size, permanently, not
+just rate-limited.
 
 ## Fixed
 

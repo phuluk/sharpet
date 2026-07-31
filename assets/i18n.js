@@ -4,7 +4,7 @@
 window.STRINGS = {
   en: {
     nav_how: "How it works", nav_domains: "Domains", nav_teams: "For teams",
-    nav_login: "Log in", nav_start: "Start quiz", exit_home: "Exit to home",
+    nav_login: "Log in", nav_start: "Start quiz", exit_home: "Exit to home", exit_profile: "Back to profile",
 
     hero_eyebrow: "No sign-up required",
     hero_title_1: "Prove you know", hero_title_hl: "your stack", hero_title_2: ", one question at a time.",
@@ -13,7 +13,7 @@ window.STRINGS = {
     hero_stat_domains: "domains covered", hero_stat_answers: "answers per question",
 
     how_eyebrow: "How it works", how_title: "Three steps. No account needed.",
-    how_sub: "Guests get the full game — the only thing tied to an account is your history.",
+    how_sub: "Play as a guest right away — up to 100 questions per round from the full question bank. The only thing tied to an account is your history.",
     step1_title: "Set your scope", step1_body: "Choose up to five domains, or play across all of them. Pick 2, 3, or 4 answer choices per question.",
     step2_title: "Answer and validate", step2_body: "Select a choice, change your mind as much as you like, then lock it in. The right answer is always revealed.",
     step3_title: "See your score", step3_body: "Track your live tally as you go, end whenever you want, and get a summary the moment you're done.",
@@ -93,7 +93,9 @@ window.STRINGS = {
 
     summary_title: "Game over", summary_lead: "Here's how you did.",
     stat_correct: "Correct", stat_accuracy: "Accuracy",
-    summary_note_guest: "Guest session — log in next time to save this and track progress over time.",
+    summary_note_guest_lead: "You played as a guest — this result won't be saved.",
+    summary_note_guest_cta: "Log in",
+    summary_note_guest_trail: " to save your results and track your progress over time.",
     summary_note_saved: "Saved to your history — see it anytime under your stats.",
     play_again: "Play again", view_stats: "View my stats",
 
@@ -125,7 +127,7 @@ window.STRINGS = {
 
   de: {
     nav_how: "So funktioniert's", nav_domains: "Bereiche", nav_teams: "Für Teams",
-    nav_login: "Anmelden", nav_start: "Quiz starten", exit_home: "Zur Startseite",
+    nav_login: "Anmelden", nav_start: "Quiz starten", exit_home: "Zur Startseite", exit_profile: "Zurück zum Profil",
 
     hero_eyebrow: "Keine Anmeldung nötig",
     hero_title_1: "Beweise, dass du", hero_title_hl: "deinen Stack", hero_title_2: " kennst — Frage für Frage.",
@@ -134,7 +136,7 @@ window.STRINGS = {
     hero_stat_domains: "Bereiche verfügbar", hero_stat_answers: "Antworten pro Frage",
 
     how_eyebrow: "So funktioniert's", how_title: "Drei Schritte. Kein Konto nötig.",
-    how_sub: "Gäste bekommen das komplette Spiel — nur der Verlauf ist an ein Konto gebunden.",
+    how_sub: "Spiele sofort als Gast — bis zu 100 Fragen pro Runde aus dem vollständigen Fragenpool. Nur der Verlauf ist an ein Konto gebunden.",
     step1_title: "Bereich festlegen", step1_body: "Wähle bis zu fünf Bereiche oder spiele über alle hinweg. Wähle 2, 3 oder 4 Antwortmöglichkeiten pro Frage.",
     step2_title: "Antworten und bestätigen", step2_body: "Wähle eine Antwort, ändere sie so oft du willst, und bestätige sie dann. Die richtige Antwort wird immer angezeigt.",
     step3_title: "Punktestand sehen", step3_body: "Verfolge deinen Punktestand live, beende jederzeit und erhalte sofort eine Zusammenfassung.",
@@ -214,7 +216,9 @@ window.STRINGS = {
 
     summary_title: "Spiel beendet", summary_lead: "So hast du abgeschnitten.",
     stat_correct: "Richtig", stat_accuracy: "Genauigkeit",
-    summary_note_guest: "Gastsitzung — melde dich beim nächsten Mal an, um dies zu speichern und deinen Fortschritt zu verfolgen.",
+    summary_note_guest_lead: "Du hast als Gast gespielt — dieses Ergebnis wird nicht gespeichert.",
+    summary_note_guest_cta: "Melde dich an",
+    summary_note_guest_trail: ", um deine Ergebnisse zu speichern und deinen Fortschritt zu verfolgen.",
     summary_note_saved: "In deinem Verlauf gespeichert — jederzeit unter deinen Statistiken einsehbar.",
     play_again: "Nochmal spielen", view_stats: "Meine Statistiken",
 
@@ -246,7 +250,7 @@ window.STRINGS = {
 
   cs: {
     nav_how: "Jak to funguje", nav_domains: "Oblasti", nav_teams: "Pro týmy",
-    nav_login: "Přihlásit se", nav_start: "Spustit kvíz", exit_home: "Zpět na úvod",
+    nav_login: "Přihlásit se", nav_start: "Spustit kvíz", exit_home: "Zpět na úvod", exit_profile: "Zpět do profilu",
 
     hero_eyebrow: "Registrace není nutná",
     hero_title_1: "Dokaž, že znáš", hero_title_hl: "svůj obor", hero_title_2: " — otázku po otázce.",
@@ -255,7 +259,7 @@ window.STRINGS = {
     hero_stat_domains: "dostupných oblastí", hero_stat_answers: "odpovědí na otázku",
 
     how_eyebrow: "Jak to funguje", how_title: "Tři kroky. Bez nutnosti účtu.",
-    how_sub: "Hosté mají k dispozici celou hru — jediné, co je vázané na účet, je historie.",
+    how_sub: "Hraj rovnou jako host — až 100 otázek na kolo z celé databáze otázek. Jediné, co je vázané na účet, je historie.",
     step1_title: "Nastav si rozsah", step1_body: "Vyber až pět oblastí, nebo hraj napříč všemi. Zvol 2, 3 nebo 4 možnosti odpovědi na otázku.",
     step2_title: "Odpověz a potvrď", step2_body: "Vyber možnost, klidně si to rozmysli, a pak ji potvrď. Správná odpověď se vždy zobrazí.",
     step3_title: "Sleduj své skóre", step3_body: "Sleduj skóre průběžně, kdykoliv hru ukonči a hned dostaneš shrnutí.",
@@ -335,7 +339,9 @@ window.STRINGS = {
 
     summary_title: "Hra skončila", summary_lead: "Takhle sis vedl/a.",
     stat_correct: "Správně", stat_accuracy: "Úspěšnost",
-    summary_note_guest: "Hra jako host — příště se přihlas, aby se výsledek uložil a šlo sledovat pokrok.",
+    summary_note_guest_lead: "Hrál/a jsi jako host — tenhle výsledek se neuloží.",
+    summary_note_guest_cta: "Přihlas se",
+    summary_note_guest_trail: ", ať si příště uložíš výsledky a budeš moct sledovat svůj pokrok.",
     summary_note_saved: "Uloženo do tvé historie — kdykoliv dostupné ve statistikách.",
     play_again: "Hrát znovu", view_stats: "Moje statistiky",
 

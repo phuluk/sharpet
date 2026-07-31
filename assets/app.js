@@ -185,6 +185,17 @@
     else window.location.href = 'index.html';
   }
 
+  // The exit-home control reads "Back to profile" once logged in, since it no
+  // longer leaves the app at that point — it drops the player on their
+  // dashboard instead. Re-applied after every applyI18n() call, which would
+  // otherwise stomp this back to the static data-i18n default.
+  function updateExitHomeText() {
+    var label = session.isLoggedIn ? t('exit_profile') : t('exit_home');
+    document.querySelectorAll('[data-action="exit-home"]').forEach(function (btn) {
+      btn.textContent = label;
+    });
+  }
+
   // ------------------------------------------------------------------ auth
   function clearLoginFieldErrors() {
     setText('login-error', '');
@@ -389,6 +400,7 @@
     closeProfileMenu();
     await supabaseClient.auth.signOut();
     resetSessionState();
+    updateExitHomeText();
     showOnly('landing');
   }
 
@@ -403,6 +415,7 @@
     setText('nav-nickname', displayName);
     setText('nav-avatar', displayName.slice(0, 2).toUpperCase());
     show($('profile-menu'), true);
+    updateExitHomeText();
     showOnly('home');
     loadDashboardData();
   }
@@ -1121,10 +1134,27 @@
     var accuracy = answeredCount > 0 ? Math.round((correctCount / answeredCount) * 100) : 0;
     setText('sum-correct', correctCount + '/' + answeredCount);
     setText('sum-accuracy', accuracy + '%');
-    setText('summary-note', session.isLoggedIn ? t('summary_note_saved') : t('summary_note_guest'));
+    renderSummaryNote();
     show($('view-stats-btn'), session.isLoggedIn);
     state.sessionId = null;
     showOnly('summary');
+  }
+
+  // Guests get a real link straight to the login screen, rather than plain
+  // text telling them to go find it themselves.
+  function renderSummaryNote() {
+    var note = $('summary-note');
+    clearChildren(note);
+    if (session.isLoggedIn) {
+      note.textContent = t('summary_note_saved');
+      return;
+    }
+    note.appendChild(document.createTextNode(t('summary_note_guest_lead') + ' '));
+    var link = el('button', 'dash-link', t('summary_note_guest_cta'));
+    link.type = 'button';
+    link.setAttribute('data-action', 'go-login');
+    note.appendChild(link);
+    note.appendChild(document.createTextNode(t('summary_note_guest_trail')));
   }
 
   function resetApp() {
@@ -1143,6 +1173,7 @@
 
   // -------------------------------------------------------- language change
   window.onLangChange = function () {
+    updateExitHomeText();
     if ($('screen-login').classList.contains('active')) applyLoginModeText();
     if (DOMAINS.length) loadDomains();
     if ($('screen-home').classList.contains('active')) loadDashboardData();
@@ -1243,6 +1274,7 @@
       session.email = current.user.email;
       session.userId = current.user.id;
     }
+    updateExitHomeText();
 
     await loadDomains();
 

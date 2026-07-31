@@ -1,0 +1,2222 @@
+[
+  {
+    "id": 6000,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which international organization has its headquarters in New York City?",
+      "de": "Welche internationale Organisation hat ihren Hauptsitz in New York City?",
+      "cs": "Která mezinárodní organizace má sídlo v New Yorku?"
+    },
+    "correct_answer": {
+      "en": "United Nations",
+      "de": "Vereinte Nationen",
+      "cs": "Organizace spojených národů"
+    },
+    "distractors": [
+      {
+        "en": "NATO",
+        "de": "NATO",
+        "cs": "NATO"
+      },
+      {
+        "en": "European Union",
+        "de": "Europäische Union",
+        "cs": "Evropská unie"
+      },
+      {
+        "en": "World Bank",
+        "de": "Weltbank",
+        "cs": "Světová banka"
+      }
+    ]
+  },
+  {
+    "id": 6001,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "In what year was the United Nations founded?",
+      "de": "In welchem Jahr wurden die Vereinten Nationen gegründet?",
+      "cs": "V jakém roce byla založena Organizace spojených národů?"
+    },
+    "correct_answer": {
+      "en": "1945",
+      "de": "1945",
+      "cs": "1945"
+    },
+    "distractors": [
+      {
+        "en": "1919",
+        "de": "1919",
+        "cs": "1919"
+      },
+      {
+        "en": "1939",
+        "de": "1939",
+        "cs": "1939"
+      },
+      {
+        "en": "1955",
+        "de": "1955",
+        "cs": "1955"
+      }
+    ]
+  },
+  {
+    "id": 6002,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which military alliance was founded in 1949?",
+      "de": "Welches Militärbündnis wurde 1949 gegründet?",
+      "cs": "Která vojenská aliance byla založena v roce 1949?"
+    },
+    "correct_answer": {
+      "en": "NATO",
+      "de": "NATO",
+      "cs": "NATO"
+    },
+    "distractors": [
+      {
+        "en": "Warsaw Pact",
+        "de": "Warschauer Pakt",
+        "cs": "Varšavská smlouva"
+      },
+      {
+        "en": "European Union",
+        "de": "Europäische Union",
+        "cs": "Evropská unie"
+      },
+      {
+        "en": "OSCE",
+        "de": "OSZE",
+        "cs": "OBSE"
+      }
+    ]
+  },
+  {
+    "id": 6003,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What term describes a government led by a single ruler with absolute power?",
+      "de": "Welcher Begriff bezeichnet eine Regierung, die von einem einzelnen Herrscher mit uneingeschränkter Macht geführt wird?",
+      "cs": "Jaký termín označuje vládu jednoho vládce s neomezenou mocí?"
+    },
+    "correct_answer": {
+      "en": "Autocracy",
+      "de": "Autokratie",
+      "cs": "Autokracie"
+    },
+    "distractors": [
+      {
+        "en": "Democracy",
+        "de": "Demokratie",
+        "cs": "Demokracie"
+      },
+      {
+        "en": "Oligarchy",
+        "de": "Oligarchie",
+        "cs": "Oligarchie"
+      },
+      {
+        "en": "Federation",
+        "de": "Föderation",
+        "cs": "Federace"
+      }
+    ]
+  },
+  {
+    "id": 6004,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which city hosts the main institutions of the European Union?",
+      "de": "In welcher Stadt befinden sich die wichtigsten Institutionen der Europäischen Union?",
+      "cs": "Ve kterém městě sídlí hlavní instituce Evropské unie?"
+    },
+    "correct_answer": {
+      "en": "Brussels",
+      "de": "Brüssel",
+      "cs": "Brusel"
+    },
+    "distractors": [
+      {
+        "en": "Strasbourg",
+        "de": "Straßburg",
+        "cs": "Štrasburk"
+      },
+      {
+        "en": "Geneva",
+        "de": "Genf",
+        "cs": "Ženeva"
+      },
+      {
+        "en": "Luxembourg City",
+        "de": "Luxemburg (Stadt)",
+        "cs": "Lucemburk"
+      }
+    ]
+  },
+  {
+    "id": 6005,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What is the name of the United Nations' principal judicial body, based in The Hague?",
+      "de": "Wie heißt das oberste Rechtsorgan der Vereinten Nationen mit Sitz in Den Haag?",
+      "cs": "Jak se jmenuje hlavní soudní orgán OSN se sídlem v Haagu?"
+    },
+    "correct_answer": {
+      "en": "International Court of Justice",
+      "de": "Internationaler Gerichtshof",
+      "cs": "Mezinárodní soudní dvůr"
+    },
+    "distractors": [
+      {
+        "en": "International Criminal Court",
+        "de": "Internationaler Strafgerichtshof",
+        "cs": "Mezinárodní trestní soud"
+      },
+      {
+        "en": "European Court of Human Rights",
+        "de": "Europäischer Gerichtshof für Menschenrechte",
+        "cs": "Evropský soud pro lidská práva"
+      },
+      {
+        "en": "Permanent Court of Arbitration",
+        "de": "Ständiger Schiedshof",
+        "cs": "Stálý rozhodčí soud"
+      }
+    ]
+  },
+  {
+    "id": 6006,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which political system divides power between a central government and regional governments?",
+      "de": "Welches politische System teilt die Macht zwischen einer Zentralregierung und regionalen Regierungen auf?",
+      "cs": "Který politický systém dělí moc mezi centrální vládu a regionální vlády?"
+    },
+    "correct_answer": {
+      "en": "Federalism",
+      "de": "Föderalismus",
+      "cs": "Federalismus"
+    },
+    "distractors": [
+      {
+        "en": "Unitary state",
+        "de": "Einheitsstaat",
+        "cs": "Unitární stát"
+      },
+      {
+        "en": "Confederation",
+        "de": "Konföderation",
+        "cs": "Konfederace"
+      },
+      {
+        "en": "Autocracy",
+        "de": "Autokratie",
+        "cs": "Autokracie"
+      }
+    ]
+  },
+  {
+    "id": 6007,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "The Cold War was primarily a political and military tension between which two blocs?",
+      "de": "Der Kalte Krieg war vor allem eine politische und militärische Spannung zwischen welchen zwei Blöcken?",
+      "cs": "Studená válka byla především politickým a vojenským napětím mezi kterými dvěma bloky?"
+    },
+    "correct_answer": {
+      "en": "The United States and the Soviet Union",
+      "de": "Den Vereinigten Staaten und der Sowjetunion",
+      "cs": "Spojenými státy a Sovětským svazem"
+    },
+    "distractors": [
+      {
+        "en": "France and Germany",
+        "de": "Frankreich und Deutschland",
+        "cs": "Francií a Německem"
+      },
+      {
+        "en": "China and Japan",
+        "de": "China und Japan",
+        "cs": "Čínou a Japonskem"
+      },
+      {
+        "en": "Britain and Russia",
+        "de": "Großbritannien und Russland",
+        "cs": "Británií a Ruskem"
+      }
+    ]
+  },
+  {
+    "id": 6008,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which committee awards the Nobel Peace Prize?",
+      "de": "Welches Komitee verleiht den Friedensnobelpreis?",
+      "cs": "Který výbor uděluje Nobelovu cenu míru?"
+    },
+    "correct_answer": {
+      "en": "The Norwegian Nobel Committee",
+      "de": "Das Norwegische Nobelkomitee",
+      "cs": "Norský Nobelův výbor"
+    },
+    "distractors": [
+      {
+        "en": "The United Nations",
+        "de": "Die Vereinten Nationen",
+        "cs": "Organizace spojených národů"
+      },
+      {
+        "en": "The Swedish Academy",
+        "de": "Die Schwedische Akademie",
+        "cs": "Švédská akademie"
+      },
+      {
+        "en": "The European Parliament",
+        "de": "Das Europäische Parlament",
+        "cs": "Evropský parlament"
+      }
+    ]
+  },
+  {
+    "id": 6009,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What term describes a country's policy of not aligning with major power blocs?",
+      "de": "Welcher Begriff beschreibt die Politik eines Landes, sich keinem großen Machtblock anzuschließen?",
+      "cs": "Jaký termín popisuje politiku země, která se nepřiklání k žádnému velkému mocenskému bloku?"
+    },
+    "correct_answer": {
+      "en": "Non-alignment",
+      "de": "Blockfreiheit",
+      "cs": "Nezúčastněnost"
+    },
+    "distractors": [
+      {
+        "en": "Federalism",
+        "de": "Föderalismus",
+        "cs": "Federalismus"
+      },
+      {
+        "en": "Isolationism",
+        "de": "Isolationismus",
+        "cs": "Izolacionismus"
+      },
+      {
+        "en": "Protectionism",
+        "de": "Protektionismus",
+        "cs": "Protekcionismus"
+      }
+    ]
+  },
+  {
+    "id": 6010,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which 1648 peace treaty is often cited as the origin of the modern system of sovereign states?",
+      "de": "Welcher Friedensvertrag von 1648 gilt oft als Ursprung des modernen Systems souveräner Staaten?",
+      "cs": "Která mírová smlouva z roku 1648 je často označována za počátek moderního systému suverénních států?"
+    },
+    "correct_answer": {
+      "en": "Peace of Westphalia",
+      "de": "Westfälischer Friede",
+      "cs": "Vestfálský mír"
+    },
+    "distractors": [
+      {
+        "en": "Treaty of Versailles",
+        "de": "Vertrag von Versailles",
+        "cs": "Versailleská smlouva"
+      },
+      {
+        "en": "Congress of Vienna",
+        "de": "Wiener Kongress",
+        "cs": "Vídeňský kongres"
+      },
+      {
+        "en": "Treaty of Utrecht",
+        "de": "Vertrag von Utrecht",
+        "cs": "Utrechtská smlouva"
+      }
+    ]
+  },
+  {
+    "id": 6011,
+    "domain": "World Politics",
+    "domain_translations": {
+      "en": "World Politics",
+      "de": "Weltpolitik",
+      "cs": "Světová politika"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What is the diplomatic principle that a country should not interfere in the internal affairs of another?",
+      "de": "Wie nennt man den diplomatischen Grundsatz, dass sich ein Staat nicht in die inneren Angelegenheiten eines anderen einmischen soll?",
+      "cs": "Jak se nazývá diplomatický princip, podle kterého by se stát neměl vměšovat do vnitřních záležitostí jiného státu?"
+    },
+    "correct_answer": {
+      "en": "Non-interference",
+      "de": "Nichteinmischung",
+      "cs": "Nevměšování"
+    },
+    "distractors": [
+      {
+        "en": "Diplomatic immunity",
+        "de": "Diplomatische Immunität",
+        "cs": "Diplomatická imunita"
+      },
+      {
+        "en": "Extraterritoriality",
+        "de": "Extraterritorialität",
+        "cs": "Extrateritorialita"
+      },
+      {
+        "en": "Mutual defense",
+        "de": "Kollektive Verteidigung",
+        "cs": "Kolektivní obrana"
+      }
+    ]
+  },
+  {
+    "id": 6012,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "How many players from each team are on the field in a standard game of soccer (association football)?",
+      "de": "Wie viele Spieler pro Mannschaft stehen bei einem regulären Fußballspiel auf dem Feld?",
+      "cs": "Kolik hráčů z jednoho týmu je na hřišti při standardním fotbalovém zápase?"
+    },
+    "correct_answer": {
+      "en": "11",
+      "de": "11",
+      "cs": "11"
+    },
+    "distractors": [
+      {
+        "en": "9",
+        "de": "9",
+        "cs": "9"
+      },
+      {
+        "en": "10",
+        "de": "10",
+        "cs": "10"
+      },
+      {
+        "en": "12",
+        "de": "12",
+        "cs": "12"
+      }
+    ]
+  },
+  {
+    "id": 6013,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "In which sport would a player perform a \"slam dunk\"?",
+      "de": "In welcher Sportart würde ein Spieler einen \"Slam Dunk\" ausführen?",
+      "cs": "Ve kterém sportu hráč provádí \"slam dunk\"?"
+    },
+    "correct_answer": {
+      "en": "Basketball",
+      "de": "Basketball",
+      "cs": "Basketbal"
+    },
+    "distractors": [
+      {
+        "en": "Volleyball",
+        "de": "Volleyball",
+        "cs": "Volejbal"
+      },
+      {
+        "en": "Handball",
+        "de": "Handball",
+        "cs": "Házená"
+      },
+      {
+        "en": "Tennis",
+        "de": "Tennis",
+        "cs": "Tenis"
+      }
+    ]
+  },
+  {
+    "id": 6014,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "How often are the Summer Olympic Games held?",
+      "de": "Wie oft finden die Olympischen Sommerspiele statt?",
+      "cs": "Jak často se konají Letní olympijské hry?"
+    },
+    "correct_answer": {
+      "en": "Every 4 years",
+      "de": "Alle 4 Jahre",
+      "cs": "Každé 4 roky"
+    },
+    "distractors": [
+      {
+        "en": "Every 2 years",
+        "de": "Alle 2 Jahre",
+        "cs": "Každé 2 roky"
+      },
+      {
+        "en": "Every 3 years",
+        "de": "Alle 3 Jahre",
+        "cs": "Každé 3 roky"
+      },
+      {
+        "en": "Every 5 years",
+        "de": "Alle 5 Jahre",
+        "cs": "Každých 5 let"
+      }
+    ]
+  },
+  {
+    "id": 6015,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What is the highest possible score in a single game of ten-pin bowling?",
+      "de": "Wie hoch ist die höchstmögliche Punktzahl in einem einzigen Spiel Bowling?",
+      "cs": "Jaké je nejvyšší možné skóre v jedné hře bowlingu?"
+    },
+    "correct_answer": {
+      "en": "300",
+      "de": "300",
+      "cs": "300"
+    },
+    "distractors": [
+      {
+        "en": "200",
+        "de": "200",
+        "cs": "200"
+      },
+      {
+        "en": "250",
+        "de": "250",
+        "cs": "250"
+      },
+      {
+        "en": "350",
+        "de": "350",
+        "cs": "350"
+      }
+    ]
+  },
+  {
+    "id": 6016,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "In tennis, what is a score of zero called?",
+      "de": "Wie nennt man beim Tennis den Punktestand null?",
+      "cs": "Jak se v tenise nazývá skóre nula?"
+    },
+    "correct_answer": {
+      "en": "Love",
+      "de": "Love",
+      "cs": "Love"
+    },
+    "distractors": [
+      {
+        "en": "Deuce",
+        "de": "Einstand",
+        "cs": "Shoda"
+      },
+      {
+        "en": "Fault",
+        "de": "Fehler",
+        "cs": "Chyba"
+      },
+      {
+        "en": "Set",
+        "de": "Satz",
+        "cs": "Set"
+      }
+    ]
+  },
+  {
+    "id": 6017,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "As of 2026, which country has won the most FIFA World Cup titles?",
+      "de": "Welches Land hat (Stand 2026) die meisten FIFA-Weltmeistertitel gewonnen?",
+      "cs": "Který stát má (k roku 2026) na kontě nejvíce titulů mistra světa FIFA?"
+    },
+    "correct_answer": {
+      "en": "Brazil",
+      "de": "Brasilien",
+      "cs": "Brazílie"
+    },
+    "distractors": [
+      {
+        "en": "Germany",
+        "de": "Deutschland",
+        "cs": "Německo"
+      },
+      {
+        "en": "Italy",
+        "de": "Italien",
+        "cs": "Itálie"
+      },
+      {
+        "en": "Argentina",
+        "de": "Argentinien",
+        "cs": "Argentina"
+      }
+    ]
+  },
+  {
+    "id": 6018,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What is the term for three consecutive strikes in bowling?",
+      "de": "Wie nennt man drei aufeinanderfolgende Strikes beim Bowling?",
+      "cs": "Jak se nazývají tři strajky bowlingu za sebou?"
+    },
+    "correct_answer": {
+      "en": "A turkey",
+      "de": "Ein Turkey",
+      "cs": "Turkey"
+    },
+    "distractors": [
+      {
+        "en": "An eagle",
+        "de": "Ein Eagle",
+        "cs": "Eagle"
+      },
+      {
+        "en": "A hat-trick",
+        "de": "Ein Hattrick",
+        "cs": "Hattrick"
+      },
+      {
+        "en": "A strike-out",
+        "de": "Ein Strike-out",
+        "cs": "Strike-out"
+      }
+    ]
+  },
+  {
+    "id": 6019,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "In golf, what is the term for scoring one stroke under par on a hole?",
+      "de": "Wie nennt man beim Golf ein Ergebnis von einem Schlag unter Par an einem Loch?",
+      "cs": "Jak se v golfu nazývá výsledek o jednu ránu pod par na jamce?"
+    },
+    "correct_answer": {
+      "en": "Birdie",
+      "de": "Birdie",
+      "cs": "Birdie"
+    },
+    "distractors": [
+      {
+        "en": "Bogey",
+        "de": "Bogey",
+        "cs": "Bogey"
+      },
+      {
+        "en": "Eagle",
+        "de": "Eagle",
+        "cs": "Eagle"
+      },
+      {
+        "en": "Par",
+        "de": "Par",
+        "cs": "Par"
+      }
+    ]
+  },
+  {
+    "id": 6020,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "How many rings are on the Olympic flag?",
+      "de": "Wie viele Ringe sind auf der olympischen Flagge abgebildet?",
+      "cs": "Kolik kruhů je na olympijské vlajce?"
+    },
+    "correct_answer": {
+      "en": "Five",
+      "de": "Fünf",
+      "cs": "Pět"
+    },
+    "distractors": [
+      {
+        "en": "Four",
+        "de": "Vier",
+        "cs": "Čtyři"
+      },
+      {
+        "en": "Six",
+        "de": "Sechs",
+        "cs": "Šest"
+      },
+      {
+        "en": "Seven",
+        "de": "Sieben",
+        "cs": "Sedm"
+      }
+    ]
+  },
+  {
+    "id": 6021,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which sport is played with a shuttlecock?",
+      "de": "Welche Sportart wird mit einem Federball gespielt?",
+      "cs": "Který sport se hraje s badmintonovým košíčkem?"
+    },
+    "correct_answer": {
+      "en": "Badminton",
+      "de": "Badminton",
+      "cs": "Badminton"
+    },
+    "distractors": [
+      {
+        "en": "Squash",
+        "de": "Squash",
+        "cs": "Squash"
+      },
+      {
+        "en": "Table tennis",
+        "de": "Tischtennis",
+        "cs": "Stolní tenis"
+      },
+      {
+        "en": "Racquetball",
+        "de": "Racquetball",
+        "cs": "Racquetball"
+      }
+    ]
+  },
+  {
+    "id": 6022,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "In professional boxing, how many rounds does a typical championship fight have?",
+      "de": "Aus wie vielen Runden besteht im Profiboxen typischerweise ein Meisterschaftskampf?",
+      "cs": "Z kolika kol se obvykle skládá profesionální boxerský mistrovský zápas?"
+    },
+    "correct_answer": {
+      "en": "12",
+      "de": "12",
+      "cs": "12"
+    },
+    "distractors": [
+      {
+        "en": "10",
+        "de": "10",
+        "cs": "10"
+      },
+      {
+        "en": "15",
+        "de": "15",
+        "cs": "15"
+      },
+      {
+        "en": "8",
+        "de": "8",
+        "cs": "8"
+      }
+    ]
+  },
+  {
+    "id": 6023,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What is the official distance of a marathon race?",
+      "de": "Wie lang ist die offizielle Strecke eines Marathons?",
+      "cs": "Jak dlouhá je oficiální trať maratonu?"
+    },
+    "correct_answer": {
+      "en": "42.195 kilometers",
+      "de": "42,195 Kilometer",
+      "cs": "42,195 kilometru"
+    },
+    "distractors": [
+      {
+        "en": "21 kilometers",
+        "de": "21 Kilometer",
+        "cs": "21 kilometrů"
+      },
+      {
+        "en": "30 kilometers",
+        "de": "30 Kilometer",
+        "cs": "30 kilometrů"
+      },
+      {
+        "en": "50 kilometers",
+        "de": "50 Kilometer",
+        "cs": "50 kilometrů"
+      }
+    ]
+  },
+  {
+    "id": 6024,
+    "domain": "Sports",
+    "domain_translations": {
+      "en": "Sports",
+      "de": "Sport",
+      "cs": "Sport"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "In which sport is the term \"home run\" used?",
+      "de": "In welcher Sportart wird der Begriff \"Home Run\" verwendet?",
+      "cs": "Ve kterém sportu se používá termín \"home run\"?"
+    },
+    "correct_answer": {
+      "en": "Baseball",
+      "de": "Baseball",
+      "cs": "Baseball"
+    },
+    "distractors": [
+      {
+        "en": "Cricket",
+        "de": "Cricket",
+        "cs": "Kriket"
+      },
+      {
+        "en": "Softball",
+        "de": "Softball",
+        "cs": "Softball"
+      },
+      {
+        "en": "Rugby",
+        "de": "Rugby",
+        "cs": "Ragby"
+      }
+    ]
+  },
+  {
+    "id": 6025,
+    "domain": "Biology & Human Body",
+    "domain_translations": {
+      "en": "Biology & Human Body",
+      "de": "Biologie & menschlicher Körper",
+      "cs": "Biologie a lidské tělo"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "What is the largest organ of the human body?",
+      "de": "Was ist das größte Organ des menschlichen Körpers?",
+      "cs": "Který orgán lidského těla je největší?"
+    },
+    "correct_answer": {
+      "en": "The skin",
+      "de": "Die Haut",
+      "cs": "Kůže"
+    },
+    "distractors": [
+      {
+        "en": "The liver",
+        "de": "Die Leber",
+        "cs": "Játra"
+      },
+      {
+        "en": "The lungs",
+        "de": "Die Lunge",
+        "cs": "Plíce"
+      },
+      {
+        "en": "The brain",
+        "de": "Das Gehirn",
+        "cs": "Mozek"
+      }
+    ]
+  },
+  {
+    "id": 6026,
+    "domain": "Biology & Human Body",
+    "domain_translations": {
+      "en": "Biology & Human Body",
+      "de": "Biologie & menschlicher Körper",
+      "cs": "Biologie a lidské tělo"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "How many chambers does the human heart have?",
+      "de": "Wie viele Kammern hat das menschliche Herz?",
+      "cs": "Kolik komor má lidské srdce?"
+    },
+    "correct_answer": {
+      "en": "Four",
+      "de": "Vier",
+      "cs": "Čtyři"
+    },
+    "distractors": [
+      {
+        "en": "Two",
+        "de": "Zwei",
+        "cs": "Dva"
+      },
+      {
+        "en": "Three",
+        "de": "Drei",
+        "cs": "Tři"
+      },
+      {
+        "en": "Five",
+        "de": "Fünf",
+        "cs": "Pět"
+      }
+    ]
+  },
+  {
+    "id": 6027,
+    "domain": "Biology & Human Body",
+    "domain_translations": {
+      "en": "Biology & Human Body",
+      "de": "Biologie & menschlicher Körper",
+      "cs": "Biologie a lidské tělo"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which blood cells are primarily responsible for fighting infection?",
+      "de": "Welche Blutzellen sind hauptsächlich für die Bekämpfung von Infektionen zuständig?",
+      "cs": "Které krvinky jsou primárně zodpovědné za boj proti infekcím?"
+    },
+    "correct_answer": {
+      "en": "White blood cells",
+      "de": "Weiße Blutkörperchen",
+      "cs": "Bílé krvinky"
+    },
+    "distractors": [
+      {
+        "en": "Red blood cells",
+        "de": "Rote Blutkörperchen",
+        "cs": "Červené krvinky"
+      },
+      {
+        "en": "Platelets",
+        "de": "Blutplättchen",
+        "cs": "Krevní destičky"
+      },
+      {
+        "en": "Plasma cells",
+        "de": "Plasmazellen",
+        "cs": "Plazmatické buňky"
+      }
+    ]
+  },
+  {
+    "id": 6028,
+    "domain": "Biology & Human Body",
+    "domain_translations": {
+      "en": "Biology & Human Body",
+      "de": "Biologie & menschlicher Körper",
+      "cs": "Biologie a lidské tělo"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which part of the cell is often called its \"powerhouse\"?",
+      "de": "Welcher Teil der Zelle wird oft als ihr \"Kraftwerk\" bezeichnet?",
+      "cs": "Která část buňky bývá označována jako její \"elektrárna\"?"
+    },
+    "correct_answer": {
+      "en": "The mitochondria",
+      "de": "Die Mitochondrien",
+      "cs": "Mitochondrie"
+    },
+    "distractors": [
+      {
+        "en": "The nucleus",
+        "de": "Der Zellkern",
+        "cs": "Jádro"
+      },
+      {
+        "en": "The ribosome",
+        "de": "Das Ribosom",
+        "cs": "Ribozom"
+      },
+      {
+        "en": "The Golgi apparatus",
+        "de": "Der Golgi-Apparat",
+        "cs": "Golgiho aparát"
+      }
+    ]
+  },
+  {
+    "id": 6029,
+    "domain": "Biology & Human Body",
+    "domain_translations": {
+      "en": "Biology & Human Body",
+      "de": "Biologie & menschlicher Körper",
+      "cs": "Biologie a lidské tělo"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which gas do humans mainly exhale as a waste product of respiration?",
+      "de": "Welches Gas atmen Menschen hauptsächlich als Abfallprodukt der Atmung aus?",
+      "cs": "Který plyn lidé hlavně vydechují jako odpadní produkt dýchání?"
+    },
+    "correct_answer": {
+      "en": "Carbon dioxide",
+      "de": "Kohlendioxid",
+      "cs": "Oxid uhličitý"
+    },
+    "distractors": [
+      {
+        "en": "Oxygen",
+        "de": "Sauerstoff",
+        "cs": "Kyslík"
+      },
+      {
+        "en": "Nitrogen",
+        "de": "Stickstoff",
+        "cs": "Dusík"
+      },
+      {
+        "en": "Hydrogen",
+        "de": "Wasserstoff",
+        "cs": "Vodík"
+      }
+    ]
+  },
+  {
+    "id": 6030,
+    "domain": "Literature",
+    "domain_translations": {
+      "en": "Literature",
+      "de": "Literatur",
+      "cs": "Literatura"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Who wrote the novel \"Pride and Prejudice\"?",
+      "de": "Wer schrieb den Roman \"Stolz und Vorurteil\"?",
+      "cs": "Kdo napsal román \"Pýcha a předsudek\"?"
+    },
+    "correct_answer": {
+      "en": "Jane Austen",
+      "de": "Jane Austen",
+      "cs": "Jane Austenová"
+    },
+    "distractors": [
+      {
+        "en": "Charlotte Brontë",
+        "de": "Charlotte Brontë",
+        "cs": "Charlotte Brontëová"
+      },
+      {
+        "en": "Emily Brontë",
+        "de": "Emily Brontë",
+        "cs": "Emily Brontëová"
+      },
+      {
+        "en": "Virginia Woolf",
+        "de": "Virginia Woolf",
+        "cs": "Virginia Woolfová"
+      }
+    ]
+  },
+  {
+    "id": 6031,
+    "domain": "Literature",
+    "domain_translations": {
+      "en": "Literature",
+      "de": "Literatur",
+      "cs": "Literatura"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which Shakespeare play features the characters Rosencrantz and Guildenstern?",
+      "de": "In welchem Shakespeare-Stück treten die Figuren Rosenkranz und Güldenstern auf?",
+      "cs": "Ve které Shakespearově hře vystupují postavy Rosencrantz a Guildenstern?"
+    },
+    "correct_answer": {
+      "en": "Hamlet",
+      "de": "Hamlet",
+      "cs": "Hamlet"
+    },
+    "distractors": [
+      {
+        "en": "Macbeth",
+        "de": "Macbeth",
+        "cs": "Macbeth"
+      },
+      {
+        "en": "Othello",
+        "de": "Othello",
+        "cs": "Othello"
+      },
+      {
+        "en": "King Lear",
+        "de": "König Lear",
+        "cs": "Král Lear"
+      }
+    ]
+  },
+  {
+    "id": 6032,
+    "domain": "Literature",
+    "domain_translations": {
+      "en": "Literature",
+      "de": "Literatur",
+      "cs": "Literatura"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Who is the author of \"One Hundred Years of Solitude\"?",
+      "de": "Wer ist der Autor von \"Hundert Jahre Einsamkeit\"?",
+      "cs": "Kdo je autorem románu \"Sto roků samoty\"?"
+    },
+    "correct_answer": {
+      "en": "Gabriel García Márquez",
+      "de": "Gabriel García Márquez",
+      "cs": "Gabriel García Márquez"
+    },
+    "distractors": [
+      {
+        "en": "Jorge Luis Borges",
+        "de": "Jorge Luis Borges",
+        "cs": "Jorge Luis Borges"
+      },
+      {
+        "en": "Mario Vargas Llosa",
+        "de": "Mario Vargas Llosa",
+        "cs": "Mario Vargas Llosa"
+      },
+      {
+        "en": "Pablo Neruda",
+        "de": "Pablo Neruda",
+        "cs": "Pablo Neruda"
+      }
+    ]
+  },
+  {
+    "id": 6033,
+    "domain": "Literature",
+    "domain_translations": {
+      "en": "Literature",
+      "de": "Literatur",
+      "cs": "Literatura"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "In George Orwell's novel \"1984,\" what is the name of the Party's all-seeing leader?",
+      "de": "Wie heißt in George Orwells Roman \"1984\" der allsehende Führer der Partei?",
+      "cs": "Jak se v románu George Orwella \"1984\" jmenuje všudypřítomný vůdce Strany?"
+    },
+    "correct_answer": {
+      "en": "Big Brother",
+      "de": "Der Große Bruder",
+      "cs": "Velký bratr"
+    },
+    "distractors": [
+      {
+        "en": "O'Brien",
+        "de": "O'Brien",
+        "cs": "O'Brien"
+      },
+      {
+        "en": "Winston",
+        "de": "Winston",
+        "cs": "Winston"
+      },
+      {
+        "en": "Napoleon",
+        "de": "Napoleon",
+        "cs": "Napoleon"
+      }
+    ]
+  },
+  {
+    "id": 6034,
+    "domain": "Literature",
+    "domain_translations": {
+      "en": "Literature",
+      "de": "Literatur",
+      "cs": "Literatura"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which novel begins with the line \"Call me Ishmael\"?",
+      "de": "Welcher Roman beginnt mit dem Satz \"Nennt mich Ismael\"?",
+      "cs": "Který román začíná větou \"Říkejte mi Ishmael\"?"
+    },
+    "correct_answer": {
+      "en": "Moby-Dick",
+      "de": "Moby-Dick",
+      "cs": "Bílá velryba"
+    },
+    "distractors": [
+      {
+        "en": "The Old Man and the Sea",
+        "de": "Der alte Mann und das Meer",
+        "cs": "Stařec a moře"
+      },
+      {
+        "en": "Treasure Island",
+        "de": "Die Schatzinsel",
+        "cs": "Ostrov pokladů"
+      },
+      {
+        "en": "Robinson Crusoe",
+        "de": "Robinson Crusoe",
+        "cs": "Robinson Crusoe"
+      }
+    ]
+  },
+  {
+    "id": 6035,
+    "domain": "Literature",
+    "domain_translations": {
+      "en": "Literature",
+      "de": "Literatur",
+      "cs": "Literatura"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Who wrote the \"Harry Potter\" book series?",
+      "de": "Wer schrieb die Buchreihe \"Harry Potter\"?",
+      "cs": "Kdo napsal knižní sérii \"Harry Potter\"?"
+    },
+    "correct_answer": {
+      "en": "J.K. Rowling",
+      "de": "J.K. Rowling",
+      "cs": "J. K. Rowlingová"
+    },
+    "distractors": [
+      {
+        "en": "J.R.R. Tolkien",
+        "de": "J.R.R. Tolkien",
+        "cs": "J. R. R. Tolkien"
+      },
+      {
+        "en": "C.S. Lewis",
+        "de": "C.S. Lewis",
+        "cs": "C. S. Lewis"
+      },
+      {
+        "en": "Roald Dahl",
+        "de": "Roald Dahl",
+        "cs": "Roald Dahl"
+      }
+    ]
+  },
+  {
+    "id": 6036,
+    "domain": "Art & Music",
+    "domain_translations": {
+      "en": "Art & Music",
+      "de": "Kunst & Musik",
+      "cs": "Umění a hudba"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Who painted the \"Mona Lisa\"?",
+      "de": "Wer malte die \"Mona Lisa\"?",
+      "cs": "Kdo namaloval \"Mona Lisu\"?"
+    },
+    "correct_answer": {
+      "en": "Leonardo da Vinci",
+      "de": "Leonardo da Vinci",
+      "cs": "Leonardo da Vinci"
+    },
+    "distractors": [
+      {
+        "en": "Michelangelo",
+        "de": "Michelangelo",
+        "cs": "Michelangelo"
+      },
+      {
+        "en": "Raphael",
+        "de": "Raffael",
+        "cs": "Raffael"
+      },
+      {
+        "en": "Titian",
+        "de": "Tizian",
+        "cs": "Tizian"
+      }
+    ]
+  },
+  {
+    "id": 6037,
+    "domain": "Art & Music",
+    "domain_translations": {
+      "en": "Art & Music",
+      "de": "Kunst & Musik",
+      "cs": "Umění a hudba"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which composer wrote the Ninth Symphony, famous for its \"Ode to Joy\"?",
+      "de": "Welcher Komponist schrieb die Neunte Sinfonie, berühmt für die \"Ode an die Freude\"?",
+      "cs": "Který skladatel napsal Devátou symfonii, proslulou \"Ódou na radost\"?"
+    },
+    "correct_answer": {
+      "en": "Ludwig van Beethoven",
+      "de": "Ludwig van Beethoven",
+      "cs": "Ludwig van Beethoven"
+    },
+    "distractors": [
+      {
+        "en": "Wolfgang Amadeus Mozart",
+        "de": "Wolfgang Amadeus Mozart",
+        "cs": "Wolfgang Amadeus Mozart"
+      },
+      {
+        "en": "Johann Sebastian Bach",
+        "de": "Johann Sebastian Bach",
+        "cs": "Johann Sebastian Bach"
+      },
+      {
+        "en": "Franz Schubert",
+        "de": "Franz Schubert",
+        "cs": "Franz Schubert"
+      }
+    ]
+  },
+  {
+    "id": 6038,
+    "domain": "Art & Music",
+    "domain_translations": {
+      "en": "Art & Music",
+      "de": "Kunst & Musik",
+      "cs": "Umění a hudba"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which art movement is Salvador Dalí most closely associated with?",
+      "de": "Mit welcher Kunstrichtung wird Salvador Dalí am engsten in Verbindung gebracht?",
+      "cs": "S kterým uměleckým směrem je nejvíce spojován Salvador Dalí?"
+    },
+    "correct_answer": {
+      "en": "Surrealism",
+      "de": "Surrealismus",
+      "cs": "Surrealismus"
+    },
+    "distractors": [
+      {
+        "en": "Cubism",
+        "de": "Kubismus",
+        "cs": "Kubismus"
+      },
+      {
+        "en": "Impressionism",
+        "de": "Impressionismus",
+        "cs": "Impresionismus"
+      },
+      {
+        "en": "Baroque",
+        "de": "Barock",
+        "cs": "Baroko"
+      }
+    ]
+  },
+  {
+    "id": 6039,
+    "domain": "Art & Music",
+    "domain_translations": {
+      "en": "Art & Music",
+      "de": "Kunst & Musik",
+      "cs": "Umění a hudba"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which musical instrument typically has 88 keys?",
+      "de": "Welches Musikinstrument hat typischerweise 88 Tasten?",
+      "cs": "Který hudební nástroj má obvykle 88 kláves?"
+    },
+    "correct_answer": {
+      "en": "The piano",
+      "de": "Das Klavier",
+      "cs": "Klavír"
+    },
+    "distractors": [
+      {
+        "en": "The organ",
+        "de": "Die Orgel",
+        "cs": "Varhany"
+      },
+      {
+        "en": "The harpsichord",
+        "de": "Das Cembalo",
+        "cs": "Cembalo"
+      },
+      {
+        "en": "The accordion",
+        "de": "Das Akkordeon",
+        "cs": "Akordeon"
+      }
+    ]
+  },
+  {
+    "id": 6040,
+    "domain": "Art & Music",
+    "domain_translations": {
+      "en": "Art & Music",
+      "de": "Kunst & Musik",
+      "cs": "Umění a hudba"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Who painted \"The Starry Night\"?",
+      "de": "Wer malte \"Die Sternennacht\"?",
+      "cs": "Kdo namaloval obraz \"Hvězdná noc\"?"
+    },
+    "correct_answer": {
+      "en": "Vincent van Gogh",
+      "de": "Vincent van Gogh",
+      "cs": "Vincent van Gogh"
+    },
+    "distractors": [
+      {
+        "en": "Claude Monet",
+        "de": "Claude Monet",
+        "cs": "Claude Monet"
+      },
+      {
+        "en": "Paul Cézanne",
+        "de": "Paul Cézanne",
+        "cs": "Paul Cézanne"
+      },
+      {
+        "en": "Edvard Munch",
+        "de": "Edvard Munch",
+        "cs": "Edvard Munch"
+      }
+    ]
+  },
+  {
+    "id": 6041,
+    "domain": "Art & Music",
+    "domain_translations": {
+      "en": "Art & Music",
+      "de": "Kunst & Musik",
+      "cs": "Umění a hudba"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which Italian artist sculpted the statue \"David\"?",
+      "de": "Welcher italienische Künstler schuf die Statue \"David\"?",
+      "cs": "Který italský umělec vytvořil sochu \"David\"?"
+    },
+    "correct_answer": {
+      "en": "Michelangelo",
+      "de": "Michelangelo",
+      "cs": "Michelangelo"
+    },
+    "distractors": [
+      {
+        "en": "Donatello",
+        "de": "Donatello",
+        "cs": "Donatello"
+      },
+      {
+        "en": "Bernini",
+        "de": "Bernini",
+        "cs": "Bernini"
+      },
+      {
+        "en": "Leonardo da Vinci",
+        "de": "Leonardo da Vinci",
+        "cs": "Leonardo da Vinci"
+      }
+    ]
+  },
+  {
+    "id": 6042,
+    "domain": "Art & Music",
+    "domain_translations": {
+      "en": "Art & Music",
+      "de": "Kunst & Musik",
+      "cs": "Umění a hudba"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What term describes a piece of music performed by a single musician?",
+      "de": "Welcher Begriff beschreibt ein Musikstück, das von einem einzelnen Musiker vorgetragen wird?",
+      "cs": "Jaký termín označuje hudební skladbu provedenou jediným hudebníkem?"
+    },
+    "correct_answer": {
+      "en": "Solo",
+      "de": "Solo",
+      "cs": "Sólo"
+    },
+    "distractors": [
+      {
+        "en": "Duet",
+        "de": "Duett",
+        "cs": "Duet"
+      },
+      {
+        "en": "Ensemble",
+        "de": "Ensemble",
+        "cs": "Ansámbl"
+      },
+      {
+        "en": "Chorus",
+        "de": "Chor",
+        "cs": "Sbor"
+      }
+    ]
+  },
+  {
+    "id": 6043,
+    "domain": "Food & Drink",
+    "domain_translations": {
+      "en": "Food & Drink",
+      "de": "Essen & Trinken",
+      "cs": "Jídlo a pití"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "What grain is the main ingredient of traditional sushi?",
+      "de": "Welches Getreide ist die Hauptzutat von traditionellem Sushi?",
+      "cs": "Která obilnina je hlavní surovinou tradičního sushi?"
+    },
+    "correct_answer": {
+      "en": "Rice",
+      "de": "Reis",
+      "cs": "Rýže"
+    },
+    "distractors": [
+      {
+        "en": "Wheat",
+        "de": "Weizen",
+        "cs": "Pšenice"
+      },
+      {
+        "en": "Barley",
+        "de": "Gerste",
+        "cs": "Ječmen"
+      },
+      {
+        "en": "Quinoa",
+        "de": "Quinoa",
+        "cs": "Quinoa"
+      }
+    ]
+  },
+  {
+    "id": 6044,
+    "domain": "Food & Drink",
+    "domain_translations": {
+      "en": "Food & Drink",
+      "de": "Essen & Trinken",
+      "cs": "Jídlo a pití"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "In which country did the dish \"paella\" originate?",
+      "de": "In welchem Land hat das Gericht \"Paella\" seinen Ursprung?",
+      "cs": "Ve které zemi má původ pokrm \"paella\"?"
+    },
+    "correct_answer": {
+      "en": "Spain",
+      "de": "Spanien",
+      "cs": "Španělsko"
+    },
+    "distractors": [
+      {
+        "en": "Italy",
+        "de": "Italien",
+        "cs": "Itálie"
+      },
+      {
+        "en": "Portugal",
+        "de": "Portugal",
+        "cs": "Portugalsko"
+      },
+      {
+        "en": "Mexico",
+        "de": "Mexiko",
+        "cs": "Mexiko"
+      }
+    ]
+  },
+  {
+    "id": 6045,
+    "domain": "Food & Drink",
+    "domain_translations": {
+      "en": "Food & Drink",
+      "de": "Essen & Trinken",
+      "cs": "Jídlo a pití"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What type of dough gives a traditional French croissant its flaky layers?",
+      "de": "Welche Teigart verleiht dem traditionellen französischen Croissant seine blättrigen Schichten?",
+      "cs": "Jaký druh těsta dává tradičnímu francouzskému croissantu jeho vrstevnatou strukturu?"
+    },
+    "correct_answer": {
+      "en": "Laminated (puff) pastry",
+      "de": "Blätterteig",
+      "cs": "Listové (vrstvené) těsto"
+    },
+    "distractors": [
+      {
+        "en": "Shortcrust pastry",
+        "de": "Mürbeteig",
+        "cs": "Křehké těsto"
+      },
+      {
+        "en": "Choux pastry",
+        "de": "Brandteig",
+        "cs": "Odpalované těsto"
+      },
+      {
+        "en": "Filo pastry",
+        "de": "Filoteig",
+        "cs": "Filo těsto"
+      }
+    ]
+  },
+  {
+    "id": 6046,
+    "domain": "Food & Drink",
+    "domain_translations": {
+      "en": "Food & Drink",
+      "de": "Essen & Trinken",
+      "cs": "Jídlo a pití"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which spice, derived from the crocus flower, is the most expensive by weight?",
+      "de": "Welches Gewürz, das aus der Krokusblüte gewonnen wird, ist pro Gewicht am teuersten?",
+      "cs": "Které koření, získávané z květu šafránu, je na váhu nejdražší?"
+    },
+    "correct_answer": {
+      "en": "Saffron",
+      "de": "Safran",
+      "cs": "Šafrán"
+    },
+    "distractors": [
+      {
+        "en": "Cinnamon",
+        "de": "Zimt",
+        "cs": "Skořice"
+      },
+      {
+        "en": "Cardamom",
+        "de": "Kardamom",
+        "cs": "Kardamom"
+      },
+      {
+        "en": "Vanilla",
+        "de": "Vanille",
+        "cs": "Vanilka"
+      }
+    ]
+  },
+  {
+    "id": 6047,
+    "domain": "Food & Drink",
+    "domain_translations": {
+      "en": "Food & Drink",
+      "de": "Essen & Trinken",
+      "cs": "Jídlo a pití"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "What is the main ingredient in traditional hummus?",
+      "de": "Was ist die Hauptzutat von traditionellem Hummus?",
+      "cs": "Jaká je hlavní surovina tradičního humusu?"
+    },
+    "correct_answer": {
+      "en": "Chickpeas",
+      "de": "Kichererbsen",
+      "cs": "Cizrna"
+    },
+    "distractors": [
+      {
+        "en": "Lentils",
+        "de": "Linsen",
+        "cs": "Čočka"
+      },
+      {
+        "en": "Black beans",
+        "de": "Schwarze Bohnen",
+        "cs": "Černé fazole"
+      },
+      {
+        "en": "Fava beans",
+        "de": "Saubohnen",
+        "cs": "Bob"
+      }
+    ]
+  },
+  {
+    "id": 6048,
+    "domain": "Food & Drink",
+    "domain_translations": {
+      "en": "Food & Drink",
+      "de": "Essen & Trinken",
+      "cs": "Jídlo a pití"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which cheese is traditionally used on a classic Margherita pizza?",
+      "de": "Welcher Käse wird traditionell auf einer klassischen Pizza Margherita verwendet?",
+      "cs": "Který sýr se tradičně používá na klasické pizze Margherita?"
+    },
+    "correct_answer": {
+      "en": "Mozzarella",
+      "de": "Mozzarella",
+      "cs": "Mozzarella"
+    },
+    "distractors": [
+      {
+        "en": "Cheddar",
+        "de": "Cheddar",
+        "cs": "Čedar"
+      },
+      {
+        "en": "Parmesan",
+        "de": "Parmesan",
+        "cs": "Parmazán"
+      },
+      {
+        "en": "Gouda",
+        "de": "Gouda",
+        "cs": "Gouda"
+      }
+    ]
+  },
+  {
+    "id": 6049,
+    "domain": "Food & Drink",
+    "domain_translations": {
+      "en": "Food & Drink",
+      "de": "Essen & Trinken",
+      "cs": "Jídlo a pití"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which spirit is made by distilling fermented agave?",
+      "de": "Welche Spirituose wird durch das Destillieren von fermentierter Agave hergestellt?",
+      "cs": "Který destilát vzniká destilací zkvašené agáve?"
+    },
+    "correct_answer": {
+      "en": "Tequila",
+      "de": "Tequila",
+      "cs": "Tequila"
+    },
+    "distractors": [
+      {
+        "en": "Rum",
+        "de": "Rum",
+        "cs": "Rum"
+      },
+      {
+        "en": "Vodka",
+        "de": "Wodka",
+        "cs": "Vodka"
+      },
+      {
+        "en": "Whisky",
+        "de": "Whisky",
+        "cs": "Whisky"
+      }
+    ]
+  },
+  {
+    "id": 6050,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "What term describes a sustained increase in the general price level of goods and services?",
+      "de": "Welcher Begriff beschreibt einen anhaltenden Anstieg des allgemeinen Preisniveaus von Waren und Dienstleistungen?",
+      "cs": "Jaký termín označuje trvalý růst všeobecné cenové hladiny zboží a služeb?"
+    },
+    "correct_answer": {
+      "en": "Inflation",
+      "de": "Inflation",
+      "cs": "Inflace"
+    },
+    "distractors": [
+      {
+        "en": "Deflation",
+        "de": "Deflation",
+        "cs": "Deflace"
+      },
+      {
+        "en": "Recession",
+        "de": "Rezession",
+        "cs": "Recese"
+      },
+      {
+        "en": "Stagflation",
+        "de": "Stagflation",
+        "cs": "Stagflace"
+      }
+    ]
+  },
+  {
+    "id": 6051,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What term describes the total value of goods and services produced by a country in a year?",
+      "de": "Welcher Begriff bezeichnet den Gesamtwert aller in einem Land in einem Jahr produzierten Waren und Dienstleistungen?",
+      "cs": "Jaký termín označuje celkovou hodnotu zboží a služeb vyrobených v zemi za jeden rok?"
+    },
+    "correct_answer": {
+      "en": "Gross Domestic Product",
+      "de": "Bruttoinlandsprodukt",
+      "cs": "Hrubý domácí produkt"
+    },
+    "distractors": [
+      {
+        "en": "Gross National Income",
+        "de": "Bruttonationaleinkommen",
+        "cs": "Hrubý národní důchod"
+      },
+      {
+        "en": "Consumer Price Index",
+        "de": "Verbraucherpreisindex",
+        "cs": "Index spotřebitelských cen"
+      },
+      {
+        "en": "Trade Balance",
+        "de": "Handelsbilanz",
+        "cs": "Obchodní bilance"
+      }
+    ]
+  },
+  {
+    "id": 6052,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "Which economic system is characterized by private ownership and free markets?",
+      "de": "Welches Wirtschaftssystem zeichnet sich durch Privateigentum und freie Märkte aus?",
+      "cs": "Který ekonomický systém se vyznačuje soukromým vlastnictvím a volným trhem?"
+    },
+    "correct_answer": {
+      "en": "Capitalism",
+      "de": "Kapitalismus",
+      "cs": "Kapitalismus"
+    },
+    "distractors": [
+      {
+        "en": "Socialism",
+        "de": "Sozialismus",
+        "cs": "Socialismus"
+      },
+      {
+        "en": "Communism",
+        "de": "Kommunismus",
+        "cs": "Komunismus"
+      },
+      {
+        "en": "Feudalism",
+        "de": "Feudalismus",
+        "cs": "Feudalismus"
+      }
+    ]
+  },
+  {
+    "id": 6053,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What term describes a period of declining economic activity lasting more than a few months?",
+      "de": "Welcher Begriff beschreibt eine Phase rückläufiger Wirtschaftstätigkeit, die länger als ein paar Monate andauert?",
+      "cs": "Jaký termín označuje období poklesu ekonomické aktivity trvající déle než několik měsíců?"
+    },
+    "correct_answer": {
+      "en": "Recession",
+      "de": "Rezession",
+      "cs": "Recese"
+    },
+    "distractors": [
+      {
+        "en": "Inflation",
+        "de": "Inflation",
+        "cs": "Inflace"
+      },
+      {
+        "en": "Surplus",
+        "de": "Überschuss",
+        "cs": "Přebytek"
+      },
+      {
+        "en": "Boom",
+        "de": "Boom",
+        "cs": "Konjunktura"
+      }
+    ]
+  },
+  {
+    "id": 6054,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which institution is responsible for setting monetary policy in the United States?",
+      "de": "Welche Institution ist für die Geldpolitik der Vereinigten Staaten zuständig?",
+      "cs": "Která instituce je zodpovědná za měnovou politiku ve Spojených státech?"
+    },
+    "correct_answer": {
+      "en": "The Federal Reserve",
+      "de": "Die Federal Reserve",
+      "cs": "Federální rezervní systém"
+    },
+    "distractors": [
+      {
+        "en": "The World Bank",
+        "de": "Die Weltbank",
+        "cs": "Světová banka"
+      },
+      {
+        "en": "The International Monetary Fund",
+        "de": "Der Internationale Währungsfonds",
+        "cs": "Mezinárodní měnový fond"
+      },
+      {
+        "en": "The U.S. Treasury",
+        "de": "Das US-Finanzministerium",
+        "cs": "Ministerstvo financí USA"
+      }
+    ]
+  },
+  {
+    "id": 6055,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "In economics, what term describes how much of a good producers are willing to sell at a given price?",
+      "de": "Welcher volkswirtschaftliche Begriff beschreibt, wie viel von einem Gut Hersteller zu einem bestimmten Preis verkaufen wollen?",
+      "cs": "Jaký ekonomický termín popisuje, kolik zboží jsou výrobci ochotni prodat za danou cenu?"
+    },
+    "correct_answer": {
+      "en": "Supply",
+      "de": "Angebot",
+      "cs": "Nabídka"
+    },
+    "distractors": [
+      {
+        "en": "Demand",
+        "de": "Nachfrage",
+        "cs": "Poptávka"
+      },
+      {
+        "en": "Equilibrium",
+        "de": "Gleichgewicht",
+        "cs": "Rovnováha"
+      },
+      {
+        "en": "Scarcity",
+        "de": "Knappheit",
+        "cs": "Nedostatek"
+      }
+    ]
+  },
+  {
+    "id": 6056,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "What term describes government financial support given to an industry or activity?",
+      "de": "Welcher Begriff beschreibt eine finanzielle Unterstützung des Staates für eine Branche oder Tätigkeit?",
+      "cs": "Jaký termín označuje finanční podporu státu určenou nějakému odvětví nebo činnosti?"
+    },
+    "correct_answer": {
+      "en": "Subsidy",
+      "de": "Subvention",
+      "cs": "Dotace"
+    },
+    "distractors": [
+      {
+        "en": "Tariff",
+        "de": "Zoll",
+        "cs": "Clo"
+      },
+      {
+        "en": "Tax",
+        "de": "Steuer",
+        "cs": "Daň"
+      },
+      {
+        "en": "Quota",
+        "de": "Quote",
+        "cs": "Kvóta"
+      }
+    ]
+  },
+  {
+    "id": 6057,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "easy",
+    "question": {
+      "en": "What term describes a tax placed on imported goods?",
+      "de": "Welcher Begriff bezeichnet eine Steuer auf importierte Waren?",
+      "cs": "Jaký termín označuje daň uvalenou na dovážené zboží?"
+    },
+    "correct_answer": {
+      "en": "Tariff",
+      "de": "Zoll",
+      "cs": "Clo"
+    },
+    "distractors": [
+      {
+        "en": "Subsidy",
+        "de": "Subvention",
+        "cs": "Dotace"
+      },
+      {
+        "en": "Quota",
+        "de": "Quote",
+        "cs": "Kvóta"
+      },
+      {
+        "en": "Excise",
+        "de": "Verbrauchsteuer",
+        "cs": "Spotřební daň"
+      }
+    ]
+  },
+  {
+    "id": 6058,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "Which organization provides loans to countries facing economic difficulty and works to maintain global financial stability?",
+      "de": "Welche Organisation vergibt Kredite an Länder in wirtschaftlichen Schwierigkeiten und arbeitet an der globalen Finanzstabilität?",
+      "cs": "Která organizace poskytuje úvěry zemím v ekonomických potížích a usiluje o globální finanční stabilitu?"
+    },
+    "correct_answer": {
+      "en": "The International Monetary Fund",
+      "de": "Der Internationale Währungsfonds",
+      "cs": "Mezinárodní měnový fond"
+    },
+    "distractors": [
+      {
+        "en": "The World Bank",
+        "de": "Die Weltbank",
+        "cs": "Světová banka"
+      },
+      {
+        "en": "The World Trade Organization",
+        "de": "Die Welthandelsorganisation",
+        "cs": "Světová obchodní organizace"
+      },
+      {
+        "en": "The United Nations",
+        "de": "Die Vereinten Nationen",
+        "cs": "Organizace spojených národů"
+      }
+    ]
+  },
+  {
+    "id": 6059,
+    "domain": "Economics",
+    "domain_translations": {
+      "en": "Economics",
+      "de": "Wirtschaft",
+      "cs": "Ekonomie"
+    },
+    "difficulty": "medium",
+    "question": {
+      "en": "What term describes a market dominated by a small number of large firms?",
+      "de": "Welcher Begriff beschreibt einen Markt, der von wenigen großen Unternehmen beherrscht wird?",
+      "cs": "Jaký termín označuje trh ovládaný malým počtem velkých firem?"
+    },
+    "correct_answer": {
+      "en": "Oligopoly",
+      "de": "Oligopol",
+      "cs": "Oligopol"
+    },
+    "distractors": [
+      {
+        "en": "Monopoly",
+        "de": "Monopol",
+        "cs": "Monopol"
+      },
+      {
+        "en": "Monopsony",
+        "de": "Monopson",
+        "cs": "Monopson"
+      },
+      {
+        "en": "Perfect competition",
+        "de": "Vollkommener Wettbewerb",
+        "cs": "Dokonalá konkurence"
+      }
+    ]
+  }
+]
