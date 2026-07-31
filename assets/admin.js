@@ -23,6 +23,31 @@
 
   var state = { domains: [], loadedTabs: {}, editingQuestionId: null, editingOptionCount: 2 };
 
+  // Same Turnstile pattern as assets/app.js — a fresh challenge on every
+  // visit to the login screen, tokens are single-use.
+  var ts = { widgets: {}, tokens: {} };
+  function showTurnstile(slotId) {
+    if (!cfg.turnstileSiteKey || cfg.turnstileSiteKey.indexOf('REPLACE_WITH') === 0) return;
+    if (!window.turnstile) {
+      window.setTimeout(function () { showTurnstile(slotId); }, 200);
+      return;
+    }
+    if (ts.widgets[slotId] == null) {
+      ts.widgets[slotId] = window.turnstile.render('#' + slotId, {
+        sitekey: cfg.turnstileSiteKey,
+        callback: function (token) { ts.tokens[slotId] = token; },
+        'expired-callback': function () { ts.tokens[slotId] = null; },
+        'error-callback': function () { ts.tokens[slotId] = null; }
+      });
+    } else {
+      ts.tokens[slotId] = null;
+      window.turnstile.reset(ts.widgets[slotId]);
+    }
+  }
+  function turnstileToken(slotId) {
+    return ts.tokens[slotId] || null;
+  }
+
   // ------------------------------------------------------------- utilities
   function $(id) { return document.getElementById(id); }
   function clearChildren(el) { while (el.firstChild) el.removeChild(el.firstChild); }
@@ -68,6 +93,7 @@
     if (!session) {
       $('gate-message').textContent = 'Log in with an admin account.';
       show($('gate-login'), true);
+      showTurnstile('turnstile-admin-login');
       return;
     }
     currentUserId = session.user.id;
@@ -97,9 +123,13 @@
     var email = $('gate-email').value.trim();
     var password = $('gate-password').value;
     setText('gate-error', '');
-    var res = await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+    var captchaToken = turnstileToken('turnstile-admin-login') || undefined;
+    var res = await supabaseClient.auth.signInWithPassword({
+      email: email, password: password, options: { captchaToken: captchaToken }
+    });
     if (res.error) {
       setText('gate-error', res.error.message || 'Log in failed.');
+      showTurnstile('turnstile-admin-login');
       return;
     }
     currentUserId = res.data.user.id;

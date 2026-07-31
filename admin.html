@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="assets/admin.css">
 <script src="assets/config.js" defer></script>
 <script src="assets/vendor/supabase-js-2.111.0.js" defer></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 <script src="assets/admin.js" defer></script>
 </head>
 <body>
@@ -41,6 +42,7 @@
             <label class="field-label" for="gate-password">Password</label>
             <input id="gate-password" type="password" autocomplete="current-password" maxlength="128" />
           </div>
+          <div id="turnstile-admin-login" class="turnstile-slot"></div>
           <p class="error-text" id="gate-error" role="alert"></p>
           <button class="btn btn-primary" type="submit">Log in</button>
         </form>
