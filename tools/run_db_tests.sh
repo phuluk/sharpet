@@ -27,11 +27,16 @@ echo "==> emulating Supabase roles and auth schema"
 psql_run <<'SQL'
 create role anon nologin;
 create role authenticated nologin;
+create role supabase_auth_admin nologin;
 create schema if not exists auth;
+-- Supabase installs extensions into this schema by default; 06_hardening.sql
+-- assumes it already exists, same as it can on a real Supabase project.
+create schema if not exists extensions;
 create table auth.users (
   id uuid primary key default gen_random_uuid(),
   email text unique,
-  raw_user_meta_data jsonb default '{}'::jsonb
+  raw_user_meta_data jsonb default '{}'::jsonb,
+  last_sign_in_at timestamptz
 );
 create or replace function auth.uid() returns uuid
 language sql stable as $$
@@ -52,6 +57,20 @@ done
 
 psql_run -f "$ROOT/db/04_security.sql" >/dev/null && echo "==> 04_security"
 psql_run -f "$ROOT/db/05_rpc.sql" >/dev/null && echo "==> 05_rpc"
+
+# 06_hardening.sql needs the `http` extension (pgsql-http) and a `vault`
+# schema, neither of which a vanilla local Postgres has — Supabase installs
+# both as trusted extensions, this throwaway cluster does not. The test
+# script stubs verify_turnstile() itself, but `create extension http` runs
+# unconditionally at the top of the file, so it has to actually be
+# installed locally (e.g. `apt install postgresql-<ver>-http` /
+# `pgxn install http`) for this step to succeed. If it's not available,
+# comment out this line and note that 06 was applied to Supabase directly
+# without a local dry run.
+psql_run -f "$ROOT/db/06_hardening.sql" >/dev/null && echo "==> 06_hardening"
+psql_run -f "$ROOT/db/07_admin.sql" >/dev/null && echo "==> 07_admin"
+psql_run -f "$ROOT/db/08_geo.sql" >/dev/null && echo "==> 08_geo"
+psql_run -f "$ROOT/db/09_region_block.sql" >/dev/null && echo "==> 09_region_block"
 
 echo "==> security tests"
 psql -h "$PGHOST" -p "$PGPORT" -U postgres -v ON_ERROR_STOP=1 \

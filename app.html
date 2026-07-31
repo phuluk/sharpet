@@ -10,6 +10,11 @@
 <script src="assets/i18n.js" defer></script>
 <script src="assets/config.js" defer></script>
 <script src="assets/vendor/supabase-js-2.111.0.js" defer></script>
+<!-- Cloudflare Turnstile cannot be vendored: it's a live challenge service,
+     not a static library, so self-hosting it would defeat the point. This is
+     the one script this page loads from a third-party origin, and the CSP in
+     vercel.json only allows this exact host. -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" defer></script>
 <script src="assets/app.js" defer></script>
 </head>
 <body>
@@ -93,6 +98,7 @@
           <p class="field-error" id="login-password-error"></p>
         </div>
         <p class="error-text" id="login-error" role="alert"></p>
+        <div id="turnstile-login" class="turnstile-slot"></div>
         <button class="btn btn-primary" id="login-submit" type="submit" data-i18n="login_submit">Log in</button>
       </form>
       <p class="hint" id="login-forgot"><button type="button" class="hint-link" data-action="go-reset-request" data-i18n="login_forgot">Forgot your password?</button></p>
@@ -113,6 +119,7 @@
           <p class="field-error" id="reset-request-email-error"></p>
         </div>
         <p class="error-text" id="reset-request-error" role="alert"></p>
+        <div id="turnstile-reset-request" class="turnstile-slot"></div>
         <button class="btn btn-primary" id="reset-request-submit" type="submit" data-i18n="reset_request_submit">Send reset link</button>
       </form>
       <p class="hint mt-2"><button type="button" class="hint-link" data-action="go-login" data-i18n="reset_request_back">← Back to log in</button></p>
@@ -188,11 +195,9 @@
         <p class="lead" data-i18n="captcha_sub">Just making sure you're human.</p>
       </div>
       <form id="captcha-form" novalidate>
-        <p class="captcha-box mono" id="captcha-question"></p>
-        <label class="sr-only" for="captcha-input" data-i18n="captcha_placeholder">Your answer</label>
-        <input id="captcha-input" type="text" inputmode="numeric" autocomplete="off" maxlength="4" data-i18n-placeholder="captcha_placeholder" placeholder="Your answer" />
+        <div id="turnstile-quiz" class="turnstile-slot"></div>
         <p class="error-text" id="captcha-error" role="alert"></p>
-        <button class="btn btn-primary" type="submit" data-i18n="captcha_verify">Verify</button>
+        <button class="btn btn-primary" type="submit" id="captcha-submit" disabled data-i18n="captcha_verify">Verify</button>
       </form>
     </div>
 

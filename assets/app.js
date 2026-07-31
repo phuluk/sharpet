@@ -26,17 +26,42 @@
   var DOMAINS = [];
   var MAX_DOMAINS = 5;
   var MIN_PASSWORD = 10;   // only enforced when *setting* a password
-  var MAX_CAPTCHA_TRIES = 5;
 
   var state = {
     domains: [], numAnswers: 3, questions: [], current: 0,
     selected: null, validated: false, correctCount: 0, answered: [],
-    captchaAnswer: 0, captchaTries: 0, sessionId: null, busy: false
+    sessionId: null, busy: false
   };
+  // Turnstile widget ids and the (single-use) tokens they've produced, keyed
+  // by the container element's id. Rendering is lazy — a widget is created
+  // the first time its screen is shown, then reset (not re-rendered) on
+  // every later visit, since a Turnstile token can only be redeemed once.
+  var ts = { widgets: {}, tokens: {} };
   var session = {
     isLoggedIn: false, email: null, userId: null,
-    displayName: null, isSignupMode: false
+    displayName: null, isSignupMode: false, regionBlocked: false
   };
+
+  /* Client-side gate for the region block added in db/09_region_block.sql —
+     a UX nicety so the Play/Log in buttons visibly do nothing instead of
+     failing after a click. The actual control is server-side: every
+     gameplay RPC re-checks is_region_blocked() itself and refuses guests
+     from a blocked region regardless of what this returns. */
+  function blockedByRegion() {
+    if (!session.regionBlocked) return false;
+    showToast(t('region_blocked'), 8000);
+    return true;
+  }
+
+  function applyRegionBlockUI() {
+    if (!session.regionBlocked) return;
+    var guestBtn = document.querySelector('#screen-landing [data-action="go-setup"]');
+    var loginBtn = document.querySelector('#screen-landing [data-action="go-login"]');
+    if (guestBtn) guestBtn.disabled = true;
+    if (loginBtn) loginBtn.disabled = true;
+    var lead = document.querySelector('#screen-landing .lead');
+    if (lead) lead.textContent = t('region_blocked');
+  }
   var recoveryFlowActive = false;
 
   var EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -133,6 +158,15 @@
   // ------------------------------------------------------------ navigation
   var LOGIN_SCREENS = { login: 1, 'reset-request': 1, 'reset-password': 1 };
 
+  // Every screen that has a Turnstile widget gets a fresh challenge each
+  // time it's shown, via showOnly — one place, rather than one call site per
+  // screen that could be missed.
+  var TURNSTILE_SLOTS = {
+    login: 'turnstile-login',
+    'reset-request': 'turnstile-reset-request',
+    captcha: 'turnstile-quiz'
+  };
+
   function showOnly(id) {
     var target = $('screen-' + id);
     if (!target) return;
@@ -143,6 +177,7 @@
       main.classList.toggle('dashboard-mode', id === 'home');
       main.classList.toggle('login-mode', Object.prototype.hasOwnProperty.call(LOGIN_SCREENS, id));
     }
+    if (TURNSTILE_SLOTS[id]) showTurnstile(TURNSTILE_SLOTS[id]);
   }
 
   function goExitHome() {
@@ -208,6 +243,8 @@
     }
     if (hasError) return;
 
+    var captchaToken = turnstileToken('turnstile-login') || undefined;
+
     state.busy = true;
     submitBtn.disabled = true;
     try {
@@ -215,9 +252,11 @@
         ? await supabaseClient.auth.signUp({
             email: email,
             password: password,
-            options: { data: { display_name: nickname } }
+            options: { data: { display_name: nickname }, captchaToken: captchaToken }
           })
-        : await supabaseClient.auth.signInWithPassword({ email: email, password: password });
+        : await supabaseClient.auth.signInWithPassword({
+            email: email, password: password, options: { captchaToken: captchaToken }
+          });
 
       if (result.error) {
         setText('login-error', friendlyAuthError(result.error, signup ? 'err_signup_failed' : 'err_login_failed'));
@@ -234,6 +273,10 @@
       $('login-password').value = '';
       await loadProfileAndGoHome();
     } finally {
+      // A Turnstile token is single-use regardless of outcome, so the next
+      // submit attempt (retry after a failure, or switching signup <-> login)
+      // needs a fresh one.
+      showTurnstile('turnstile-login');
       state.busy = false;
       submitBtn.disabled = false;
       applyLoginModeText();
@@ -261,13 +304,16 @@
       return;
     }
 
+    var captchaToken = turnstileToken('turnstile-reset-request') || undefined;
+
     state.busy = true;
     submitBtn.disabled = true;
     try {
       // The same toast is shown whether or not the address has an account, so
       // this form does not leak which e-mails are registered.
       await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + window.location.pathname + '?mode=reset'
+        redirectTo: window.location.origin + window.location.pathname + '?mode=reset',
+        captchaToken: captchaToken
       });
     } finally {
       state.busy = false;
@@ -733,55 +779,80 @@
     }
   }
 
-  // ---------------------------------------------------------------- captcha
-  /* A client-side arithmetic check is a speed bump, not bot protection — the
-     answer lives in this file. It exists to slow down casual automation; the
-     real limits are the per-user rate limits in db/05_rpc.sql. Swap in
-     Turnstile or hCaptcha before opening this up to public traffic. */
+  // -------------------------------------------------------------- turnstile
+  /* Cloudflare Turnstile. Verification happens server-side, inside the
+     get_quiz_questions() and Supabase Auth calls themselves (see
+     db/06_hardening.sql) — this file only ever collects a token and hands it
+     to the RPC/auth call. There is nothing here for a script to bypass by
+     reading the bundle, unlike the old arithmetic captcha.
+
+     A logged-in caller never sees this screen for quiz start: they're
+     already accountable via their account (rate-limited per-uid), so the
+     captcha only gates anonymous guests and the account-creation surface
+     (sign up / log in / password reset), matching how Supabase's own
+     CAPTCHA protection setting applies to those three forms. */
+  function showTurnstile(slotId) {
+    if (!cfg.turnstileSiteKey || cfg.turnstileSiteKey.indexOf('REPLACE_WITH') === 0) return;
+    if (!window.turnstile) {
+      // The Turnstile script loads with `defer`; on a slow connection this
+      // screen can appear before it's ready. Retry briefly rather than
+      // leaving the widget slot permanently empty.
+      window.setTimeout(function () { showTurnstile(slotId); }, 200);
+      return;
+    }
+    if (ts.widgets[slotId] == null) {
+      ts.widgets[slotId] = window.turnstile.render('#' + slotId, {
+        sitekey: cfg.turnstileSiteKey,
+        callback: function (token) { ts.tokens[slotId] = token; onTurnstileToken(slotId); },
+        'expired-callback': function () { ts.tokens[slotId] = null; onTurnstileToken(slotId); },
+        'error-callback': function () { ts.tokens[slotId] = null; onTurnstileToken(slotId); }
+      });
+    } else {
+      // Tokens are single-use: get a fresh one on every visit to the screen,
+      // not just the first.
+      ts.tokens[slotId] = null;
+      window.turnstile.reset(ts.widgets[slotId]);
+    }
+    onTurnstileToken(slotId);
+  }
+
+  function onTurnstileToken(slotId) {
+    if (slotId === 'turnstile-quiz') {
+      var btn = $('captcha-submit');
+      if (btn) btn.disabled = !ts.tokens[slotId];
+    }
+  }
+
+  function turnstileToken(slotId) {
+    return ts.tokens[slotId] || null;
+  }
+
   function goCaptcha() {
-    var a = Math.floor(Math.random() * 8) + 2;
-    var b = Math.floor(Math.random() * 8) + 1;
-    state.captchaAnswer = a + b;
-    setText('captcha-question', a + ' + ' + b + ' = ?');
-    $('captcha-input').value = '';
+    // Logged-in players are already accountable via their account; only
+    // guests need to clear the human check before a quiz starts.
+    if (session.isLoggedIn) {
+      startQuiz(null);
+      return;
+    }
+    setText('captcha-error', '');
+    var btn = $('captcha-submit');
+    if (btn) btn.disabled = true;
     showOnly('captcha');
-    $('captcha-input').focus();
   }
 
-  function newCaptchaAfterFailure() {
-    var a = Math.floor(Math.random() * 8) + 2;
-    var b = Math.floor(Math.random() * 8) + 1;
-    state.captchaAnswer = a + b;
-    setText('captcha-question', a + ' + ' + b + ' = ?');
-    $('captcha-input').value = '';
-    $('captcha-input').focus();
-  }
-
-  function checkCaptcha(event) {
+  function submitCaptcha(event) {
     if (event) event.preventDefault();
-    var value = parseInt($('captcha-input').value, 10);
-    if (value === state.captchaAnswer) {
-      state.captchaTries = 0;
-      setText('captcha-error', '');
-      startQuiz();
+    var token = turnstileToken('turnstile-quiz');
+    if (!token) {
+      setText('captcha-error', t('captcha_error'));
       return;
     }
-    state.captchaTries++;
-    if (state.captchaTries >= MAX_CAPTCHA_TRIES) {
-      state.captchaTries = 0;
-      setText('captcha-error', '');
-      showToast(t('captcha_too_many'));
-      showOnly('setup');
-      return;
-    }
-    // The old code regenerated the challenge through goCaptcha(), which wiped
-    // this message before it was ever painted.
-    setText('captcha-error', t('captcha_error'));
-    newCaptchaAfterFailure();
+    setText('captcha-error', '');
+    startQuiz(token);
   }
 
   // ------------------------------------------------------------------- quiz
-  async function startQuiz() {
+  async function startQuiz(guestCaptchaToken) {
     if (state.busy) return;
     state.busy = true;
     try {
@@ -793,11 +864,15 @@
         p_domain_ids: state.domains,
         p_language: lang,
         p_num_options: state.numAnswers,
-        p_limit: requested
+        p_limit: requested,
+        p_turnstile_token: guestCaptchaToken || null
       });
 
       if (questionsRes.error || !questionsRes.data || !questionsRes.data.length) {
         if (questionsRes.error) console.error('get_quiz_questions failed:', questionsRes.error);
+        // A captcha rejection (42501) and a rate limit (53400) both land
+        // here as generic errors — deliberately: telling an anonymous
+        // caller *which* control it tripped just helps it route around one.
         showToast(questionsRes.error ? t('load_error') : t('load_empty'), 7000);
         showOnly('setup');
         return;
@@ -1096,8 +1171,8 @@
     'toggle-profile-menu': function (_el, event) { toggleProfileMenu(event); },
     'log-out': logOut,
     'exit-home': goExitHome,
-    'go-setup': function () { closeProfileMenu(); showOnly('setup'); },
-    'go-login': function () { showOnly('login'); },
+    'go-setup': function () { if (blockedByRegion()) return; closeProfileMenu(); showOnly('setup'); },
+    'go-login': function () { if (blockedByRegion()) return; showOnly('login'); },
     'go-reset-request': goResetRequest,
     'toggle-login-mode': toggleLoginMode,
     'go-captcha': goCaptcha,
@@ -1136,7 +1211,7 @@
     $('login-form').addEventListener('submit', submitLogin);
     $('reset-request-form').addEventListener('submit', submitResetRequest);
     $('reset-password-form').addEventListener('submit', submitResetPassword);
-    $('captcha-form').addEventListener('submit', checkCaptcha);
+    $('captcha-form').addEventListener('submit', submitCaptcha);
 
     bindPasswordRules('login-password', 'login-pw-rules');
     bindPasswordRules('reset-password-new', 'reset-pw-rules');
@@ -1171,13 +1246,22 @@
 
     await loadDomains();
 
+    if (!session.isLoggedIn) {
+      var regionRes = await supabaseClient.rpc('region_status', {});
+      // A failed lookup fails open on the client too — the server-side
+      // check inside get_quiz_questions/submit_quiz_answer is the real
+      // control and doesn't depend on this call ever succeeding.
+      session.regionBlocked = regionRes.data === true;
+      applyRegionBlockUI();
+    }
+
     if (recoveryFlowActive) { showOnly('reset-password'); return; }
 
     var params = new URLSearchParams(window.location.search);
     var mode = params.get('mode');
-    if (mode === 'guest') showOnly('setup');
+    if (mode === 'guest') { if (!blockedByRegion()) showOnly('setup'); else showOnly('landing'); }
     else if (session.isLoggedIn) await loadProfileAndGoHome();
-    else if (mode === 'login' || linkExpired) showOnly('login');
+    else if (mode === 'login' || linkExpired) { if (!blockedByRegion()) showOnly('login'); else showOnly('landing'); }
     else showOnly('landing');
   }
 

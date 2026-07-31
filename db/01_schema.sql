@@ -234,3 +234,7 @@ create table if not exists private.app_config (
   value text not null
 );
 revoke all on table private.app_config from anon, authenticated, public;
+-- Belt and suspenders: PostgREST can't reach this table at all (schema-level
+-- revoke above), but enabling RLS too costs nothing and is what Supabase's
+-- own SQL editor linter expects to see on every table.
+alter table private.app_config enable row level security;

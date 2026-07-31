@@ -11,6 +11,10 @@ update — there is no separate migration mechanism.
 | 03 | `03_seed_questions/*.sql` | 5 075 questions × 3 languages (generated) |
 | 04 | `04_security.sql` | RLS policies, column grants, the auth trigger |
 | 05 | `05_rpc.sql` | The gameplay API the browser actually calls |
+| 06 | `06_hardening.sql` | Turnstile verification, RPC rate limits, Auth Hook functions |
+| 07 | `07_admin.sql` | Admin layer: user/question moderation, CSV import, tunable settings, audit log |
+| 08 | `08_geo.sql` | Country-of-origin tracking (Cloudflare's `cf-ipcountry` header) for the usage dashboard |
+| 09 | `09_region_block.sql` | Guest-only continent block (Asia/Africa/South America by default) + manual IP ban list + fixed guest demo pool |
 
 ### Step 03 is split into parts
 
@@ -28,10 +32,24 @@ Database**, you can skip the clicking entirely:
 
 ```bash
 for f in db/01_schema.sql db/02_seed_domains.sql db/03_seed_questions/*.sql \
-         db/04_security.sql db/05_rpc.sql; do
+         db/04_security.sql db/05_rpc.sql db/06_hardening.sql db/07_admin.sql \
+         db/08_geo.sql db/09_region_block.sql; do
   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$f"
 done
 ```
+
+`06_hardening.sql` also needs two things `psql` can't do for you — see
+"Manual dashboard steps" in `SECURITY.md`: creating the Turnstile secret in
+Vault, and wiring the two Auth Hook functions it defines into
+**Authentication → Auth Hooks** in the dashboard. Until the Vault secret exists,
+`verify_turnstile()` fails closed, so guest quiz starts will be rejected —
+expected, not a bug, until that step is done.
+
+`07_admin.sql` bootstraps the first admin by e-mail address (currently
+`peter.huluk@gmail.com`, near the top of the file, under "profiles:
+is_admin / is_banned") — edit that literal before running it if the admin
+account uses a different address. Everyone after the first admin is
+promoted from `admin.html` itself.
 
 The seed files are generated — edit the JSON in `archive/input_questions/` and
 run `python3 tools/build_seed.py` rather than editing the SQL by hand.
@@ -67,3 +85,28 @@ Re-running 01 → 05 is safe, but note two behaviour changes:
 * `04_security.sql` revokes the blanket table grants Supabase hands to `anon`
   and `authenticated`. Anything outside this repo that talked to these tables
   directly will need to go through the RPCs instead.
+* `06_hardening.sql` drops and recreates `get_quiz_questions()` with an extra
+  trailing parameter (`p_turnstile_token`). Any caller still using the old
+  4-argument form will get a "function does not exist" error — that's the
+  point, it stops the unguarded version from being callable at all. The
+  frontend in this repo already calls the 5-argument form.
+* `07_admin.sql` adds `is_admin` / `is_banned` to `profiles`. Both are
+  readable by the owner (and, per the existing friends policy, by accepted
+  friends — a pre-existing trade-off, not new) but not client-writable at
+  any point; the only way to change them is `admin_set_user_admin()` /
+  `admin_set_user_active()`, both of which re-check `is_admin()` themselves.
+* `08_geo.sql` reads Cloudflare's `cf-ipcountry` request header — present
+  because Supabase's own API sits behind Cloudflare — rather than calling
+  a third-party geo-IP service. No visitor IP is sent anywhere outside the
+  project to get a country. Historical `usage_events` rows from before
+  this migration have `country = null` and show up as `"??"` in the admin
+  usage tab's by-country breakdown, not as an error.
+* `09_region_block.sql` only ever blocks a caller with `auth.uid() is null`
+  — an existing registered account is never affected, no matter where it
+  connects from. Sign-up itself can't reliably be blocked by geography this
+  way (see the note at the top of the file); what's actually enforced is
+  that gameplay never works for a blocked-region guest, so registering from
+  one doesn't get you anywhere either. It also drops and recreates
+  `admin_list_questions()` and `admin_update_question()` with an extra
+  `is_guest_demo` column/parameter — same non-negotiable-arity-change
+  reasoning as `get_quiz_questions()` in `06_hardening.sql`.

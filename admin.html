@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex, nofollow">
+<title>Sharpet — admin</title>
+<link rel="stylesheet" href="assets/app.css">
+<link rel="stylesheet" href="assets/admin.css">
+<script src="assets/config.js" defer></script>
+<script src="assets/vendor/supabase-js-2.111.0.js" defer></script>
+<script src="assets/admin.js" defer></script>
+</head>
+<body>
+
+<div class="toast-container" id="toast-container" role="status" aria-live="polite"></div>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">S</span>Sharpet admin</a>
+    <div class="nav-right">
+      <button type="button" class="exit-link" data-action="log-out">Log out</button>
+    </div>
+  </div>
+</nav>
+
+<main id="admin-main">
+
+  <!-- GATE: shown until we know whether the caller is an admin -->
+  <div class="admin-screen active" id="admin-screen-gate">
+    <div class="card admin-card">
+      <p class="hint" id="gate-message">Checking access…</p>
+      <div id="gate-login" class="is-hidden">
+        <form id="gate-login-form" novalidate>
+          <div class="field">
+            <label class="field-label" for="gate-email">Email</label>
+            <input id="gate-email" type="email" autocomplete="email" maxlength="254" />
+          </div>
+          <div class="field">
+            <label class="field-label" for="gate-password">Password</label>
+            <input id="gate-password" type="password" autocomplete="current-password" maxlength="128" />
+          </div>
+          <p class="error-text" id="gate-error" role="alert"></p>
+          <button class="btn btn-primary" type="submit">Log in</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP: shown once confirmed admin -->
+  <div class="admin-screen" id="admin-screen-app">
+    <div class="admin-tabs" id="admin-tabs">
+      <button type="button" class="admin-tab active" data-tab="users">Users</button>
+      <button type="button" class="admin-tab" data-tab="reported">Flagged questions</button>
+      <button type="button" class="admin-tab" data-tab="questions">Question bank</button>
+      <button type="button" class="admin-tab" data-tab="settings">Settings</button>
+      <button type="button" class="admin-tab" data-tab="region">Region blocking</button>
+      <button type="button" class="admin-tab" data-tab="audit">Audit log</button>
+      <button type="button" class="admin-tab" data-tab="usage">Usage</button>
+    </div>
+
+    <!-- USERS -->
+    <section class="admin-panel active" id="panel-users">
+      <div class="admin-panel-head">
+        <h2>Users</h2>
+        <input type="search" id="users-search" class="admin-search" placeholder="Search by email or name…" />
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Email</th><th>Name</th><th>Joined</th><th>Last sign-in</th>
+            <th>Quizzes</th><th>Answers</th><th>Status</th><th>Role</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="users-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- REPORTED QUESTIONS -->
+    <section class="admin-panel" id="panel-reported">
+      <div class="admin-panel-head">
+        <h2>Flagged questions</h2>
+        <label class="admin-check"><input type="checkbox" id="reported-include-resolved" /> Show resolved</label>
+      </div>
+      <table class="admin-table">
+        <thead>
+          <tr><th>Question</th><th>Reason</th><th>Reported by</th><th>When</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="reported-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- QUESTION BANK -->
+    <section class="admin-panel" id="panel-questions">
+      <div class="admin-panel-head">
+        <h2>Question bank</h2>
+        <input type="search" id="questions-search" class="admin-search" placeholder="Search English text…" />
+      </div>
+
+      <div class="admin-upload-box">
+        <h3>Bulk upload (CSV)</h3>
+        <p class="hint admin-hint-left">
+          Columns: <code>domain, difficulty, text_en, text_de, text_cs,
+          option1_en, option1_de, option1_cs, option2_en, option2_de, option2_cs,
+          option3_en, option3_de, option3_cs, option4_en, option4_de, option4_cs,
+          correct_option</code>. Option 1 and 2 are required; 3 and 4 are optional.
+          <code>correct_option</code> is 1-based. <code>domain</code> must match an
+          existing domain's English name exactly.
+        </p>
+        <input type="file" id="csv-file-input" accept=".csv,text/csv" />
+        <button type="button" class="btn btn-primary" id="csv-upload-btn" disabled>Upload</button>
+        <div id="csv-summary" class="admin-summary is-hidden"></div>
+      </div>
+
+      <table class="admin-table">
+        <thead>
+          <tr><th>ID</th><th>Domain</th><th>Difficulty</th><th>Text (EN)</th><th>Active</th><th>Guest demo</th><th></th></tr>
+        </thead>
+        <tbody id="questions-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- QUESTION EDITOR (modal-ish panel, not a tab) -->
+    <section class="admin-panel" id="panel-question-edit">
+      <div class="admin-panel-head">
+        <h2>Edit question <span id="edit-question-id" class="muted"></span></h2>
+        <button type="button" class="btn" data-action="close-edit">← Back to question bank</button>
+      </div>
+      <form id="question-edit-form" novalidate>
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" for="edit-domain">Domain</label>
+            <select id="edit-domain"></select>
+          </div>
+          <div class="field">
+            <label class="field-label" for="edit-difficulty">Difficulty</label>
+            <select id="edit-difficulty">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label" for="edit-active">Active</label>
+            <select id="edit-active">
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
+        </div>
+        <label class="admin-check admin-hint-left">
+          <input type="checkbox" id="edit-guest-demo" />
+          In the guest demo pool (unregistered players only ever see questions marked here)
+        </label>
+        <div class="admin-lang-grid">
+          <div class="field"><label class="field-label">Text (EN)</label><textarea id="edit-text-en" rows="2"></textarea></div>
+          <div class="field"><label class="field-label">Text (DE)</label><textarea id="edit-text-de" rows="2"></textarea></div>
+          <div class="field"><label class="field-label">Text (CS)</label><textarea id="edit-text-cs" rows="2"></textarea></div>
+        </div>
+        <div id="edit-options"></div>
+        <div class="field">
+          <label class="field-label" for="edit-correct">Correct option</label>
+          <select id="edit-correct"></select>
+        </div>
+        <p class="error-text" id="edit-error" role="alert"></p>
+        <button class="btn btn-primary" type="submit">Save changes</button>
+      </form>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="admin-panel" id="panel-settings">
+      <div class="admin-panel-head"><h2>Abuse-prevention settings</h2></div>
+      <table class="admin-table" id="settings-table">
+        <thead><tr><th>Setting</th><th>Value</th><th></th></tr></thead>
+        <tbody id="settings-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- REGION BLOCKING -->
+    <section class="admin-panel" id="panel-region">
+      <div class="admin-panel-head"><h2>Region blocking</h2></div>
+      <p class="hint admin-hint-left">
+        Applies to guests and (best-effort, see SECURITY.md) new sign-ups only — an
+        existing registered account keeps playing regardless of where it connects
+        from. Detected from Cloudflare's country header on each request; a request
+        with no resolvable country is never blocked by the continent rule.
+      </p>
+
+      <h3>Blocked continents</h3>
+      <div class="field-row">
+        <div class="field" style="flex:2">
+          <input type="text" id="region-continents-input" placeholder="e.g. Asia,Africa,South America" />
+        </div>
+        <button type="button" class="btn btn-primary btn-auto" id="region-continents-save">Save</button>
+      </div>
+      <p class="hint admin-hint-left">Comma-separated: Africa, Antarctica, Asia, Europe, North America, Oceania, South America.</p>
+
+      <h3>Manual IP / CIDR bans</h3>
+      <div class="field-row">
+        <div class="field">
+          <input type="text" id="ip-ban-cidr-input" placeholder="203.0.113.7 or 203.0.113.0/24" />
+        </div>
+        <div class="field" style="flex:2">
+          <input type="text" id="ip-ban-reason-input" placeholder="Reason (optional)" />
+        </div>
+        <button type="button" class="btn btn-primary btn-auto" id="ip-ban-add-btn">Add ban</button>
+      </div>
+      <table class="admin-table">
+        <thead><tr><th>Range</th><th>Reason</th><th>Added by</th><th>When</th><th></th></tr></thead>
+        <tbody id="ip-bans-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- AUDIT LOG -->
+    <section class="admin-panel" id="panel-audit">
+      <div class="admin-panel-head"><h2>Audit log</h2></div>
+      <table class="admin-table">
+        <thead><tr><th>When</th><th>Admin</th><th>Action</th><th>Target</th><th>Details</th></tr></thead>
+        <tbody id="audit-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- USAGE -->
+    <section class="admin-panel" id="panel-usage">
+      <div class="admin-panel-head"><h2>Usage</h2></div>
+      <div class="admin-stat-grid" id="usage-stats"></div>
+      <h3>Quiz starts, last 30 days</h3>
+      <table class="admin-table">
+        <thead><tr><th>Day</th><th>Guests</th><th>Registered</th></tr></thead>
+        <tbody id="usage-daily-tbody"></tbody>
+      </table>
+      <h3>By country, last 30 days</h3>
+      <p class="hint admin-hint-left">From Cloudflare's country header on each request — never a third-party lookup. "??" is a request Cloudflare couldn't place a country on.</p>
+      <table class="admin-table">
+        <thead><tr><th>Country</th><th>Quiz starts</th></tr></thead>
+        <tbody id="usage-country-tbody"></tbody>
+      </table>
+    </section>
+
+  </div>
+</main>
+
+</body>
+</html>

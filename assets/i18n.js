@@ -81,7 +81,7 @@ window.STRINGS = {
     all_domains: "All domains",
 
     captcha_title: "Quick check", captcha_sub: "Just making sure you're human.",
-    captcha_placeholder: "Your answer", captcha_verify: "Verify", captcha_error: "Not quite — try a new one.",
+    captcha_placeholder: "Your answer", captcha_verify: "Continue", captcha_error: "Verification failed — please try again.",
 
     q_progress: "Question {current} of {total}", q_score: "Score: {correct}/{total}",
     validate: "Validate", back: "← Back", next: "Next →",
@@ -89,6 +89,7 @@ window.STRINGS = {
     correct_msg: "Correct!", wrong_msg: "Not quite — the correct answer is highlighted above.",
     reported_msg: "Reported to an admin for review — thanks for the flag.",
     load_error: "Could not load questions. Check your Supabase config.",
+    region_blocked: "Guest play and sign-up aren't available in your region right now.",
 
     summary_title: "Game over", summary_lead: "Here's how you did.",
     stat_correct: "Correct", stat_accuracy: "Accuracy",
@@ -201,7 +202,7 @@ window.STRINGS = {
     all_domains: "Alle Bereiche",
 
     captcha_title: "Kurze Prüfung", captcha_sub: "Wir stellen nur sicher, dass du ein Mensch bist.",
-    captcha_placeholder: "Deine Antwort", captcha_verify: "Bestätigen", captcha_error: "Nicht ganz — versuch es erneut.",
+    captcha_placeholder: "Deine Antwort", captcha_verify: "Weiter", captcha_error: "Überprüfung fehlgeschlagen — bitte versuch es erneut.",
 
     q_progress: "Frage {current} von {total}", q_score: "Punkte: {correct}/{total}",
     validate: "Bestätigen", back: "← Zurück", next: "Weiter →",
@@ -209,6 +210,7 @@ window.STRINGS = {
     correct_msg: "Richtig!", wrong_msg: "Nicht ganz — die richtige Antwort ist oben markiert.",
     reported_msg: "An eine Administration zur Prüfung gemeldet — danke für den Hinweis.",
     load_error: "Fragen konnten nicht geladen werden. Supabase-Konfiguration prüfen.",
+    region_blocked: "Gastspiel und Registrierung sind in deiner Region derzeit nicht verfügbar.",
 
     summary_title: "Spiel beendet", summary_lead: "So hast du abgeschnitten.",
     stat_correct: "Richtig", stat_accuracy: "Genauigkeit",
@@ -321,7 +323,7 @@ window.STRINGS = {
     all_domains: "Všechny oblasti",
 
     captcha_title: "Rychlá kontrola", captcha_sub: "Jen si ověřujeme, že jsi člověk.",
-    captcha_placeholder: "Tvoje odpověď", captcha_verify: "Ověřit", captcha_error: "Není to ono — zkus to znovu.",
+    captcha_placeholder: "Tvoje odpověď", captcha_verify: "Pokračovat", captcha_error: "Ověření se nezdařilo — zkus to prosím znovu.",
 
     q_progress: "Otázka {current} z {total}", q_score: "Skóre: {correct}/{total}",
     validate: "Potvrdit", back: "← Zpět", next: "Další →",
@@ -329,6 +331,7 @@ window.STRINGS = {
     correct_msg: "Správně!", wrong_msg: "Není to ono — správná odpověď je zvýrazněná výše.",
     reported_msg: "Nahlášeno administrátorovi ke kontrole — díky za upozornění.",
     load_error: "Otázky se nepodařilo načíst. Zkontroluj nastavení Supabase.",
+    region_blocked: "Hraní jako host a registrace nejsou ve tvém regionu momentálně dostupné.",
 
     summary_title: "Hra skončila", summary_lead: "Takhle sis vedl/a.",
     stat_correct: "Správně", stat_accuracy: "Úspěšnost",

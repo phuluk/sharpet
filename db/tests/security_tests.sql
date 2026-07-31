@@ -42,6 +42,31 @@ select pg_temp.check('display_name is capped at 32 chars',
   (select count(*) from public.profiles where char_length(display_name) > 32) = 0);
 
 -- ----------------------------------------------------------------------
+-- Stub out Turnstile for this run.
+-- get_quiz_questions() now requires a verified captcha token for any caller
+-- with no auth.uid() (see db/06_hardening.sql), which is exactly the
+-- context most of this script runs assertions in before "set role anon" /
+-- "set role authenticated" get to a real jwt claim. verify_turnstile()
+-- calls a live Cloudflare endpoint this offline harness has no route to and
+-- has no real site/secret key for, so it's the one piece of 06 that can't
+-- be exercised here — everything else (rate limiting, RLS, the RPC logic
+-- itself) still runs for real. Swap this back out if you ever wire a real
+-- Turnstile test key into the harness.
+create or replace function public.verify_turnstile(p_token text)
+returns boolean
+language sql
+as $$ select true; $$;
+
+-- This whole section predates the guest-only demo pool (db/09_region_block.sql)
+-- and is explicitly meant to exercise get_quiz_questions unrestricted, so it
+-- impersonates alice (authenticated) rather than a guest — otherwise every
+-- assertion below would silently start seeing only the ~100-question demo
+-- pool instead of the full active bank, since this section runs as the
+-- superuser with no jwt claim set, which auth.uid() reads as "guest" same
+-- as an anonymous caller.
+select set_config('request.jwt.claim.sub', '11111111-1111-1111-1111-111111111111', false);
+
+-- ----------------------------------------------------------------------
 -- get_quiz_questions: shape and honesty (checked with full rights)
 -- ----------------------------------------------------------------------
 select pg_temp.check('quiz_question_row exposes no answer key',
@@ -145,6 +170,30 @@ select pg_temp.check('the row limit is clamped, not trusted',
 -- ======================================================================
 set role anon;
 select set_config('request.jwt.claim.sub', '', false);
+
+-- Guest demo pool (db/09_region_block.sql): a guest never sees a question
+-- outside the fixed, curated pool, no matter how many domains they ask for.
+do $$
+declare
+  v_ids             int[];
+  v_non_demo_count  int;
+begin
+  perform pg_temp.check('region_status() is false for a guest with no country header',
+    public.region_status() = false);
+
+  select array_agg(question_id) into v_ids
+    from public.get_quiz_questions(
+      array[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17], 'en', 3, 100, 'any-token');
+
+  perform pg_temp.check('the demo pool actually returns some questions',
+    coalesce(array_length(v_ids, 1), 0) > 0);
+
+  select count(*) into v_non_demo_count
+    from public.questions
+   where id = any(v_ids) and not is_guest_demo;
+  perform pg_temp.check('a guest only ever gets questions from the demo pool',
+    v_non_demo_count = 0);
+end $$;
 
 do $$
 declare ok boolean;
@@ -374,6 +423,190 @@ select set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222
 select pg_temp.check('an accepted friend becomes visible',
   (select count(*) from public.profiles
     where id = '11111111-1111-1111-1111-111111111111') = 1);
+
+-- ======================================================================
+-- GEO (db/08_geo.sql)
+-- ======================================================================
+-- client_country() is revoked from anon/authenticated (it's an internal
+-- helper, same as client_ip()) — check it as the superuser, which owns it
+-- and so isn't subject to that revoke.
+reset role;
+select pg_temp.check('client_country() returns null rather than erroring when there is no cf-ipcountry header',
+  public.client_country() is null);
+
+-- ======================================================================
+-- ADMIN LAYER (db/07_admin.sql)
+-- ======================================================================
+reset role;
+
+-- Promote alice directly (bypassing the RPC — there's no admin yet to call
+-- it with) to get a test fixture. The real bootstrap path is the one-time
+-- UPDATE in 07_admin.sql keyed to a real e-mail address.
+update public.profiles set is_admin = true
+where id = '11111111-1111-1111-1111-111111111111';
+
+set role authenticated;
+select set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222', false);
+
+do $$
+declare ok boolean;
+begin
+  perform pg_temp.check('is_admin() is false for a non-admin', public.is_admin() = false);
+
+  begin
+    perform public.admin_list_users(null, 10, 0);
+    ok := false;
+  exception when insufficient_privilege then ok := true;
+  end;
+  perform pg_temp.check('a non-admin cannot call admin_list_users', ok);
+
+  begin
+    perform public.admin_set_user_active('11111111-1111-1111-1111-111111111111', false);
+    ok := false;
+  exception when insufficient_privilege then ok := true;
+  end;
+  perform pg_temp.check('a non-admin cannot deactivate anyone', ok);
+end $$;
+
+reset role;
+set role authenticated;
+select set_config('request.jwt.claim.sub', '11111111-1111-1111-1111-111111111111', false);
+
+do $$
+declare
+  ok      boolean;
+  n_users int;
+  domain_name text;
+  import_res  jsonb;
+begin
+  perform pg_temp.check('is_admin() is true for alice', public.is_admin());
+
+  select count(*) into n_users from public.admin_list_users(null, 100, 0);
+  perform pg_temp.check('admin_list_users returns rows including bob',
+    n_users >= 2);
+
+  perform public.admin_set_user_active('22222222-2222-2222-2222-222222222222', false);
+  perform pg_temp.check('admin_set_user_active bans bob',
+    (select is_banned from public.profiles where id = '22222222-2222-2222-2222-222222222222'));
+
+  begin
+    perform public.admin_set_user_admin('11111111-1111-1111-1111-111111111111', false);
+    ok := false;
+  exception when others then ok := true;
+  end;
+  perform pg_temp.check('an admin cannot remove their own admin access', ok);
+
+  begin
+    perform public.admin_set_setting('not_a_real_key', '5');
+    ok := false;
+  exception when others then ok := true;
+  end;
+  perform pg_temp.check('admin_set_setting rejects an unknown key', ok);
+
+  perform public.admin_set_setting('rate_limit_get_quiz_questions_max', '42');
+  perform pg_temp.check('admin_set_setting persists a known key',
+    (select value from public.admin_get_settings() where key = 'rate_limit_get_quiz_questions_max') = '42');
+
+  begin
+    perform public.admin_set_setting('rate_limit_get_quiz_questions_max', 'not-a-number');
+    ok := false;
+  exception when others then ok := true;
+  end;
+  perform pg_temp.check('admin_set_setting rejects a non-numeric value for an int setting', ok);
+
+  select dt.name into domain_name
+    from public.domain_translations dt
+   where dt.language_code = 'en'
+   limit 1;
+
+  import_res := public.admin_upsert_questions_csv(jsonb_build_array(
+    jsonb_build_object(
+      'domain', domain_name, 'difficulty', 'easy',
+      'text_en', 'admin test question — csv import', 'text_de', 'admin test question — csv import (de)',
+      'text_cs', 'admin test question — csv import (cs)',
+      'option1_en', 'A', 'option1_de', 'A', 'option1_cs', 'A',
+      'option2_en', 'B', 'option2_de', 'B', 'option2_cs', 'B',
+      'correct_option', '1'
+    ),
+    jsonb_build_object('domain', '', 'text_en', 'missing everything else')
+  ));
+  perform pg_temp.check('admin_upsert_questions_csv creates a valid new row',
+    (import_res ->> 'created')::int = 1);
+  perform pg_temp.check('admin_upsert_questions_csv flags the malformed row invalid',
+    (import_res ->> 'invalid')::int = 1);
+
+  -- Re-importing the exact same valid row is a duplicate, not a second create.
+  import_res := public.admin_upsert_questions_csv(jsonb_build_array(
+    jsonb_build_object(
+      'domain', domain_name, 'difficulty', 'easy',
+      'text_en', 'admin test question — csv import', 'text_de', 'admin test question — csv import (de)',
+      'text_cs', 'admin test question — csv import (cs)',
+      'option1_en', 'A', 'option1_de', 'A', 'option1_cs', 'A',
+      'option2_en', 'B', 'option2_de', 'B', 'option2_cs', 'B',
+      'correct_option', '1'
+    )
+  ));
+  perform pg_temp.check('re-importing the same row is a duplicate, not a create',
+    (import_res ->> 'duplicates')::int = 1 and (import_res ->> 'created')::int = 0);
+
+  perform pg_temp.check('admin actions land in the audit log',
+    (select count(*) from public.admin_list_audit_log(500, 0)) >= 4);
+end $$;
+
+-- Region blocking (db/09_region_block.sql): the text-kind setting and the
+-- manual IP ban list.
+do $$
+declare
+  ok       boolean;
+  v_ban_id bigint;
+begin
+  perform public.admin_set_setting('blocked_continents', 'Asia,Africa,South America');
+  perform pg_temp.check('admin_set_setting accepts a text-kind setting',
+    (select value from public.admin_get_settings() where key = 'blocked_continents')
+      = 'Asia,Africa,South America');
+
+  begin
+    perform public.admin_set_setting('blocked_continents', '');
+    ok := false;
+  exception when others then ok := true;
+  end;
+  perform pg_temp.check('admin_set_setting rejects an empty text-kind value', ok);
+
+  perform public.admin_add_ip_ban('203.0.113.0/24', 'test range');
+  -- admin_list_ip_bans(), not the table directly: ip_bans has no grants for
+  -- authenticated at all, by design, same as every other admin-only table.
+  select id into v_ban_id from public.admin_list_ip_bans() where cidr = '203.0.113.0/24';
+  perform pg_temp.check('admin_add_ip_ban records the ban',
+    (select count(*) from public.admin_list_ip_bans() where cidr = '203.0.113.0/24') = 1);
+
+  begin
+    perform public.admin_add_ip_ban('not-an-ip', null);
+    ok := false;
+  exception when others then ok := true;
+  end;
+  perform pg_temp.check('admin_add_ip_ban rejects a malformed range', ok);
+
+  perform public.admin_remove_ip_ban(v_ban_id);
+  perform pg_temp.check('admin_remove_ip_ban removes it',
+    (select count(*) from public.admin_list_ip_bans() where cidr = '203.0.113.0/24') = 0);
+end $$;
+
+-- Bob is banned from the block above — gameplay-writing RPCs must now
+-- refuse him even though he's still a valid, logged-in user.
+reset role;
+set role authenticated;
+select set_config('request.jwt.claim.sub', '22222222-2222-2222-2222-222222222222', false);
+
+do $$
+declare ok boolean;
+begin
+  begin
+    perform public.start_quiz_session(array[1], 'en', 3, 5);
+    ok := false;
+  exception when insufficient_privilege then ok := true;
+  end;
+  perform pg_temp.check('a deactivated user cannot start a quiz session', ok);
+end $$;
 
 reset role;
 delete from auth.users where email in ('alice@test.local','bob@test.local');
