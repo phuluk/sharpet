@@ -178,6 +178,14 @@
       main.classList.toggle('login-mode', Object.prototype.hasOwnProperty.call(LOGIN_SCREENS, id));
     }
     if (TURNSTILE_SLOTS[id]) showTurnstile(TURNSTILE_SLOTS[id]);
+
+    // Logged-in users have a dashboard and an in-quiz "End game" button to
+    // get back where they need to go, so the persistent nav-level exit link
+    // is only useful as an escape hatch from setup — everywhere else for a
+    // logged-in user it's either a no-op (already home/summary) or a
+    // confusing duplicate of "End game" that skips finishing the quiz.
+    // Guests still get it on every screen, since it's their only way back.
+    show($('nav-exit-link'), !session.isLoggedIn || id === 'setup');
   }
 
   function goExitHome() {
