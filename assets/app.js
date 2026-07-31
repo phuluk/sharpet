@@ -400,8 +400,7 @@
     closeProfileMenu();
     await supabaseClient.auth.signOut();
     resetSessionState();
-    updateExitHomeText();
-    showOnly('landing');
+    window.location.href = 'index.html';
   }
 
   async function loadProfileAndGoHome() {
