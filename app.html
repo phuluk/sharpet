@@ -44,6 +44,7 @@
         </button>
         <div class="profile-options" id="profile-options">
           <button type="button" data-action="go-setup" data-i18n="home_play">Play quiz</button>
+          <button type="button" data-action="go-submit" data-i18n="home_submit">Submit questions</button>
           <button type="button" data-action="log-out" data-i18n="home_logout">Log out</button>
         </div>
       </div>
@@ -212,7 +213,10 @@
       </div>
       <p class="q-text" id="q-text"></p>
       <div class="opts" id="q-opts"></div>
-      <button type="button" class="report-link" id="report-btn" data-action="report-question" data-i18n="report">⚑ Report question as incorrect</button>
+      <div class="q-link-row">
+        <button type="button" class="report-link" id="report-btn" data-action="report-question" data-i18n="report">⚑ Report question as incorrect</button>
+        <button type="button" class="report-link" id="flag-btn" data-action="toggle-flag-question" data-i18n="flag_question">🔖 I already know this — hide it</button>
+      </div>
       <div class="snackbar mono" id="snackbar" role="status" aria-live="polite"></div>
       <div class="quiz-actions">
         <button class="btn btn-primary" id="validate-btn" data-action="validate" data-i18n="validate">Validate</button>
@@ -239,6 +243,30 @@
         <button class="btn btn-primary" data-action="play-again" data-i18n="play_again">Play again</button>
         <button class="btn is-hidden" id="view-stats-btn" data-action="view-stats" data-i18n="view_stats">View my stats</button>
       </div>
+    </div>
+
+    <!-- SUBMIT QUESTIONS -->
+    <div class="screen" id="screen-submit">
+      <div class="center">
+        <div class="icon-badge lime" aria-hidden="true">📥</div>
+        <h2 class="card-title" data-i18n="submit_title">Submit questions</h2>
+        <p class="lead" data-i18n="submit_sub">Upload a CSV of new questions from any source. We automatically check for duplicates against the live question bank before anything is added.</p>
+      </div>
+      <form id="submit-form" novalidate>
+        <div class="field">
+          <label class="field-label" for="submit-source" data-i18n="submit_field_source">Source (optional)</label>
+          <input id="submit-source" name="source" type="text" maxlength="200" placeholder="e.g. trivia-db, a book title, a URL" />
+        </div>
+        <div class="field">
+          <label class="field-label" for="submit-file" data-i18n="submit_field_file">CSV file</label>
+          <input id="submit-file" name="file" type="file" accept=".csv,text/csv" />
+          <p class="hint" data-i18n="submit_field_file_hint">Columns: domain, difficulty, text_en, text_de, text_cs, option1_en..option4_cs, correct_option (1-based).</p>
+        </div>
+        <p class="error-text" id="submit-error" role="alert"></p>
+        <button class="btn btn-primary" id="submit-upload-btn" type="submit" disabled data-i18n="submit_upload">Upload and check</button>
+      </form>
+      <div class="dash-card is-hidden" id="submit-summary"></div>
+      <p class="hint mt-2"><button type="button" class="hint-link" data-action="go-home" data-i18n="submit_back">← Back</button></p>
     </div>
 
   </div>
@@ -285,6 +313,14 @@
         <button type="button" class="dash-link" id="reported-view-all" data-action="reported-view-all" disabled data-i18n="home_view_all">View all</button>
       </div>
       <div id="reported-list"><div class="dash-empty" data-i18n="home_reported_empty">You haven't reported any questions.</div></div>
+    </div>
+
+    <div class="dash-card">
+      <div class="dash-card-head">
+        <span class="dash-title" data-i18n="home_flagged">Questions I know</span>
+        <button type="button" class="dash-link" id="flagged-view-all" data-action="flagged-view-all" disabled data-i18n="home_view_all">View all</button>
+      </div>
+      <div id="flagged-list"><div class="dash-empty" data-i18n="home_flagged_empty">Flag a question during a quiz and it'll show up here.</div></div>
     </div>
   </div>
 </main>

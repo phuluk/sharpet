@@ -462,6 +462,7 @@
     renderSessionHistory(sessionsRes.data || []);
 
     loadAndRenderReportedQuestions();
+    loadAndRenderFlaggedQuestions();
   }
 
   function computeAccuracy(rows) {
@@ -700,6 +701,63 @@
     });
   }
 
+  async function loadAndRenderFlaggedQuestions() {
+    var container = $('flagged-list');
+    var viewAllBtn = $('flagged-view-all');
+
+    var res = await supabaseClient
+      .from('flagged_questions')
+      .select('id, flagged_at, question_id')
+      .order('flagged_at', { ascending: false })
+      .limit(5);
+    if (res.error) console.error('dashboard flagged-questions query failed:', res.error);
+    var flags = res.data || [];
+
+    if (!flags.length) {
+      renderEmpty(container, 'home_flagged_empty');
+      viewAllBtn.disabled = true;
+      return;
+    }
+    viewAllBtn.disabled = false;
+
+    var ids = flags.map(function (f) { return f.question_id; });
+    var textsRes = await supabaseClient
+      .from('question_translations')
+      .select('question_id, text')
+      .eq('language_code', getLang())
+      .in('question_id', ids);
+    if (textsRes.error) console.error('dashboard flagged-questions text lookup failed:', textsRes.error);
+
+    var textById = Object.create(null);
+    (textsRes.data || []).forEach(function (row) { textById[row.question_id] = row.text; });
+
+    clearChildren(container);
+    flags.forEach(function (f) {
+      var row = el('div', 'dash-row');
+      var left = el('div', 'flagged-row-left');
+      left.appendChild(el('span', 'grow', textById[f.question_id] || '#' + f.question_id));
+      var dateStr = new Date(f.flagged_at).toLocaleDateString(getLang(), { month: 'short', day: 'numeric' });
+      left.appendChild(el('span', 'muted', t('flagged_on', { date: dateStr })));
+      row.appendChild(left);
+
+      var unflagBtn = el('button', 'dash-link', t('unflag_btn'));
+      unflagBtn.type = 'button';
+      unflagBtn.addEventListener('click', function () { unflagFromProfile(f.question_id); });
+      row.appendChild(unflagBtn);
+      container.appendChild(row);
+    });
+  }
+
+  async function unflagFromProfile(questionId) {
+    var res = await supabaseClient.rpc('unflag_question', { p_question_id: questionId });
+    if (res.error) {
+      console.error('unflag_question failed:', res.error);
+      showToast(t('flag_error'));
+      return;
+    }
+    loadAndRenderFlaggedQuestions();
+  }
+
   // ----------------------------------------------------------- profile menu
   function toggleProfileMenu(event) {
     if (event) event.stopPropagation();
@@ -909,6 +967,7 @@
       state.current = 0;
       state.correctCount = 0;
       state.answered = new Array(state.questions.length).fill(null);
+      state.flaggedInSession = {};
       state.sessionId = null;
 
       if (session.isLoggedIn) {
@@ -971,9 +1030,11 @@
     });
 
     $('back-btn').classList.toggle('is-invisible', state.current === 0);
-    // report_question requires a login, so don't dangle a dead control in
-    // front of guests.
+    // report_question/flag_question require a login, so don't dangle dead
+    // controls in front of guests.
     show($('report-btn'), session.isLoggedIn);
+    show($('flag-btn'), session.isLoggedIn);
+    renderFlagButton();
     hideSnackbar();
 
     if (state.validated) paintValidated(); else paintSelection();
@@ -1106,6 +1167,43 @@
     }
   }
 
+  // Questions get_quiz_questions() hands out are already filtered to exclude
+  // ones the caller has flagged, so within a single session a question only
+  // ever starts out unflagged — this map just tracks the toggle the player
+  // makes (and lets them undo it) before moving to the next question.
+  function renderFlagButton() {
+    var btn = $('flag-btn');
+    if (!btn) return;
+    var q = state.questions[state.current];
+    var flagged = !!(state.flaggedInSession && state.flaggedInSession[q.id]);
+    btn.classList.toggle('is-flagged', flagged);
+    btn.textContent = t(flagged ? 'unflag_question' : 'flag_question');
+    btn.disabled = false;
+  }
+
+  async function toggleFlagQuestion() {
+    if (!session.isLoggedIn || state.busy) return;
+    var q = state.questions[state.current];
+    if (!state.flaggedInSession) state.flaggedInSession = {};
+    var flagged = !!state.flaggedInSession[q.id];
+    var btn = $('flag-btn');
+    if (btn) btn.disabled = true;
+
+    var res = flagged
+      ? await supabaseClient.rpc('unflag_question', { p_question_id: q.id })
+      : await supabaseClient.rpc('flag_question', { p_question_id: q.id });
+
+    if (btn) btn.disabled = false;
+    if (res.error) {
+      console.error((flagged ? 'unflag_question' : 'flag_question') + ' failed:', res.error);
+      setSnackbar('info', t('flag_error'));
+      return;
+    }
+    state.flaggedInSession[q.id] = !flagged;
+    renderFlagButton();
+    setSnackbar('info', t(flagged ? 'unflagged_msg' : 'flagged_msg'));
+  }
+
   async function reportQuestion() {
     if (!session.isLoggedIn) return;
     var q = state.questions[state.current];
@@ -1203,6 +1301,106 @@
     return true;
   }
 
+  // ------------------------------------------------------------ submit page
+  /* Minimal RFC4180 parser, identical to the one in assets/admin.js — kept as
+     a separate copy since the two pages share no code today (see file-header
+     note in admin.js). Handles quoted fields, embedded commas/newlines, and
+     "" as an escaped quote. */
+  function parseSubmitCSV(text) {
+    var rows = [];
+    var row = [];
+    var field = '';
+    var inQuotes = false;
+    var i = 0;
+    text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    while (i < text.length) {
+      var c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { field += '"'; i += 2; continue; }
+          inQuotes = false; i++; continue;
+        }
+        field += c; i++; continue;
+      }
+      if (c === '"') { inQuotes = true; i++; continue; }
+      if (c === ',') { row.push(field); field = ''; i++; continue; }
+      if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; i++; continue; }
+      field += c; i++;
+    }
+    if (field.length || row.length) { row.push(field); rows.push(row); }
+    if (!rows.length) return [];
+
+    var headers = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+    var out = [];
+    for (var r = 1; r < rows.length; r++) {
+      if (rows[r].length === 1 && rows[r][0].trim() === '') continue;
+      var obj = {};
+      headers.forEach(function (h, idx) { obj[h] = rows[r][idx] != null ? rows[r][idx] : ''; });
+      out.push(obj);
+    }
+    return out;
+  }
+
+  function handleSubmitFileChange() {
+    var input = $('submit-file');
+    $('submit-upload-btn').disabled = !(input.files && input.files.length);
+    show($('submit-summary'), false);
+    setText('submit-error', '');
+  }
+
+  function friendlyRpcError(res, fallback) {
+    return (res && res.error && res.error.message) ? res.error.message : fallback;
+  }
+
+  async function submitQuestionsFile(event) {
+    event.preventDefault();
+    var input = $('submit-file');
+    setText('submit-error', '');
+    if (!input.files || !input.files.length) return;
+    var file = input.files[0];
+    if (file.size > 5 * 1024 * 1024) {
+      setText('submit-error', 'That file is larger than 5 MB — split it into smaller batches.');
+      return;
+    }
+    var text = await file.text();
+    var rows = parseSubmitCSV(text);
+    if (!rows.length) {
+      setText('submit-error', 'No data rows found in that file.');
+      return;
+    }
+
+    var btn = $('submit-upload-btn');
+    btn.disabled = true;
+    var source = $('submit-source').value.trim() || null;
+    var res;
+    try {
+      res = await supabaseClient.rpc('submit_questions_batch', { p_rows: rows, p_source: source });
+    } finally {
+      btn.disabled = false;
+    }
+    if (res.error) {
+      setText('submit-error', friendlyRpcError(res, 'Upload failed.'));
+      return;
+    }
+
+    var summary = res.data || {};
+    var box = $('submit-summary');
+    clearChildren(box);
+    box.appendChild(el('p', null, t('submit_result_summary', {
+      total: summary.total, pending: summary.pending,
+      duplicates: summary.duplicates, invalid: summary.invalid
+    })));
+    (summary.errors || []).slice(0, 20).forEach(function (e) {
+      box.appendChild(el('p', 'admin-error-line', 'Row ' + e.row + ': ' + e.reason));
+    });
+    if ((summary.errors || []).length > 20) {
+      box.appendChild(el('p', 'admin-error-line', '…and ' + (summary.errors.length - 20) + ' more.'));
+    }
+    show(box, true);
+    input.value = '';
+    $('submit-upload-btn').disabled = true;
+  }
+
   var ACTIONS = {
     'toggle-lang-menu': function (_el, event) { window.toggleLangMenu(event); },
     'set-lang': function (element) { window.setLang(element.getAttribute('data-lang')); },
@@ -1211,6 +1409,8 @@
     'exit-home': goExitHome,
     'go-setup': function () { if (blockedByRegion()) return; closeProfileMenu(); showOnly('setup'); },
     'go-login': function () { if (blockedByRegion()) return; showOnly('login'); },
+    'go-submit': function () { closeProfileMenu(); show($('submit-summary'), false); setText('submit-error', ''); showOnly('submit'); },
+    'go-home': function () { showOnly('home'); loadDashboardData(); },
     'go-reset-request': goResetRequest,
     'toggle-login-mode': toggleLoginMode,
     'go-captcha': goCaptcha,
@@ -1218,11 +1418,13 @@
     'prev-question': prevQuestion,
     'next-question': nextQuestion,
     'report-question': reportQuestion,
+    'toggle-flag-question': toggleFlagQuestion,
     'end-game': endGame,
     'play-again': resetApp,
     'view-stats': function () { showOnly('home'); loadDashboardData(); },
     'history-view-all': function () { showToast(t('coming_soon')); },
-    'reported-view-all': function () { showToast(t('coming_soon')); }
+    'reported-view-all': function () { showToast(t('coming_soon')); },
+    'flagged-view-all': function () { showToast(t('coming_soon')); }
   };
 
   function bindEvents() {
@@ -1250,6 +1452,8 @@
     $('reset-request-form').addEventListener('submit', submitResetRequest);
     $('reset-password-form').addEventListener('submit', submitResetPassword);
     $('captcha-form').addEventListener('submit', submitCaptcha);
+    $('submit-file').addEventListener('change', handleSubmitFileChange);
+    $('submit-form').addEventListener('submit', submitQuestionsFile);
 
     bindPasswordRules('login-password', 'login-pw-rules');
     bindPasswordRules('reset-password-new', 'reset-pw-rules');

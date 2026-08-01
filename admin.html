@@ -56,6 +56,7 @@
       <button type="button" class="admin-tab active" data-tab="users">Users</button>
       <button type="button" class="admin-tab" data-tab="reported">Flagged questions</button>
       <button type="button" class="admin-tab" data-tab="questions">Question bank</button>
+      <button type="button" class="admin-tab" data-tab="submissions">Submissions</button>
       <button type="button" class="admin-tab" data-tab="settings">Settings</button>
       <button type="button" class="admin-tab" data-tab="region">Region blocking</button>
       <button type="button" class="admin-tab" data-tab="audit">Audit log</button>
@@ -120,6 +121,25 @@
           <tr><th>ID</th><th>Domain</th><th>Difficulty</th><th>Text (EN)</th><th>Active</th><th>Guest demo</th><th></th></tr>
         </thead>
         <tbody id="questions-tbody"></tbody>
+      </table>
+    </section>
+
+    <!-- USER-SUBMITTED QUESTIONS -->
+    <section class="admin-panel" id="panel-submissions">
+      <div class="admin-panel-head">
+        <h2>Submissions</h2>
+        <label class="admin-check"><input type="checkbox" id="submissions-include-resolved" /> Show approved/rejected too</label>
+      </div>
+      <p class="hint admin-hint-left">
+        Questions submitted by users through the app's "Submit questions" page.
+        Everything sits in staging first; a nightly pass resolves most of it
+        automatically. Only submissions it isn't confident about land here.
+      </p>
+      <table class="admin-table">
+        <thead>
+          <tr><th>Submitted by</th><th>Source</th><th>Domain</th><th>Languages</th><th>Question (preview)</th><th>Closest match</th><th>Similarity</th><th>AI notes</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="submissions-tbody"></tbody>
       </table>
     </section>
 

@@ -45,6 +45,15 @@ window.STRINGS = {
     home_history: "Session history", home_history_empty: "No sessions yet.",
     home_history_in_progress: "In progress",
     home_reported: "Reported questions", home_reported_empty: "You haven't reported any questions.",
+    home_flagged: "Questions I know", home_flagged_empty: "Flag a question during a quiz and it'll show up here.",
+    flagged_on: "Flagged {date}", unflag_btn: "Unflag",
+    home_submit: "Submit questions",
+
+    submit_title: "Submit questions", submit_sub: "Upload a CSV of new questions from any source. We automatically check for duplicates against the live question bank before anything is added.",
+    submit_field_source: "Source (optional)", submit_field_file: "CSV file",
+    submit_field_file_hint: "Columns: domain (required), plus at least one of text_en/text_de/text_cs with its option1 (the correct answer). difficulty, extra options, other languages, and correct_option are all optional.",
+    submit_upload: "Upload and check", submit_back: "← Back",
+    submit_result_summary: "{total} rows — {pending} queued for review, {duplicates} already existed, {invalid} invalid.",
     home_view_all: "View all",
     home_streak_active: "{count}-day streak",
 
@@ -86,8 +95,10 @@ window.STRINGS = {
     q_progress: "Question {current} of {total}", q_score: "Score: {correct}/{total}",
     validate: "Validate", back: "← Back", next: "Next →",
     report: "⚑ Report question as incorrect", end_game: "End game",
+    flag_question: "🔖 I already know this — hide it", unflag_question: "🔖 Unhide this question",
     correct_msg: "Correct!", wrong_msg: "Not quite — the correct answer is highlighted above.",
     reported_msg: "Reported to an admin for review — thanks for the flag.",
+    flagged_msg: "Hidden — you won't see this question again.", unflagged_msg: "Unhidden — this question may show up again.",
     load_error: "Could not load questions. Check your Supabase config.",
     region_blocked: "Guest play and sign-up aren't available in your region right now.",
 
@@ -121,6 +132,7 @@ window.STRINGS = {
     load_empty: "No questions available for those domains yet. Try picking another one.",
     answer_error: "Couldn't submit that answer. Check your connection and try again.",
     report_error: "Couldn't send the report right now. Please try again later.",
+    flag_error: "Couldn't update that right now. Please try again later.",
     coming_soon: "Not built yet — coming soon.",
     chart_day_summary: "{total} answered, {correct} correct, {wrong} incorrect"
   },
@@ -168,6 +180,15 @@ window.STRINGS = {
     home_history: "Sitzungsverlauf", home_history_empty: "Noch keine Sitzungen.",
     home_history_in_progress: "Läuft noch",
     home_reported: "Gemeldete Fragen", home_reported_empty: "Du hast noch keine Fragen gemeldet.",
+    home_flagged: "Bekannte Fragen", home_flagged_empty: "Markiere eine Frage während eines Quiz — sie erscheint dann hier.",
+    flagged_on: "Markiert am {date}", unflag_btn: "Markierung aufheben",
+    home_submit: "Fragen einreichen",
+
+    submit_title: "Fragen einreichen", submit_sub: "Lade eine CSV-Datei mit neuen Fragen aus beliebigen Quellen hoch. Wir prüfen automatisch auf Duplikate in der bestehenden Fragendatenbank, bevor etwas hinzugefügt wird.",
+    submit_field_source: "Quelle (optional)", submit_field_file: "CSV-Datei",
+    submit_field_file_hint: "Spalten: domain (Pflicht), sowie mindestens eines von text_en/text_de/text_cs mit zugehörigem option1 (die richtige Antwort). difficulty, weitere Optionen, andere Sprachen und correct_option sind optional.",
+    submit_upload: "Hochladen und prüfen", submit_back: "← Zurück",
+    submit_result_summary: "{total} Zeilen — {pending} zur Prüfung vorgemerkt, {duplicates} bereits vorhanden, {invalid} ungültig.",
     home_view_all: "Alle anzeigen",
     home_streak_active: "{count}-Tage-Serie",
 
@@ -209,8 +230,10 @@ window.STRINGS = {
     q_progress: "Frage {current} von {total}", q_score: "Punkte: {correct}/{total}",
     validate: "Bestätigen", back: "← Zurück", next: "Weiter →",
     report: "⚑ Frage als falsch melden", end_game: "Spiel beenden",
+    flag_question: "🔖 Kenne ich schon — ausblenden", unflag_question: "🔖 Frage wieder einblenden",
     correct_msg: "Richtig!", wrong_msg: "Nicht ganz — die richtige Antwort ist oben markiert.",
     reported_msg: "An eine Administration zur Prüfung gemeldet — danke für den Hinweis.",
+    flagged_msg: "Ausgeblendet — diese Frage wird dir nicht mehr angezeigt.", unflagged_msg: "Wieder eingeblendet — diese Frage kann erneut erscheinen.",
     load_error: "Fragen konnten nicht geladen werden. Supabase-Konfiguration prüfen.",
     region_blocked: "Gastspiel und Registrierung sind in deiner Region derzeit nicht verfügbar.",
 
@@ -244,6 +267,7 @@ window.STRINGS = {
     load_empty: "Für diese Bereiche gibt es noch keine Fragen. Wähle einen anderen.",
     answer_error: "Antwort konnte nicht gesendet werden. Prüfe deine Verbindung.",
     report_error: "Die Meldung konnte gerade nicht gesendet werden. Bitte später erneut versuchen.",
+    flag_error: "Das konnte gerade nicht aktualisiert werden. Bitte später erneut versuchen.",
     coming_soon: "Noch nicht gebaut — kommt bald.",
     chart_day_summary: "{total} beantwortet, {correct} richtig, {wrong} falsch"
   },
@@ -291,6 +315,15 @@ window.STRINGS = {
     home_history: "Historie her", home_history_empty: "Zatím žádné hry.",
     home_history_in_progress: "Probíhá",
     home_reported: "Nahlášené otázky", home_reported_empty: "Zatím jsi nenahlásil žádnou otázku.",
+    home_flagged: "Otázky, které znám", home_flagged_empty: "Označ otázku během hry a objeví se tady.",
+    flagged_on: "Označeno {date}", unflag_btn: "Zrušit označení",
+    home_submit: "Nahrát otázky",
+
+    submit_title: "Nahrát otázky", submit_sub: "Nahraj CSV soubor s novými otázkami z libovolného zdroje. Před přidáním automaticky zkontrolujeme duplicity vůči stávající databázi otázek.",
+    submit_field_source: "Zdroj (nepovinné)", submit_field_file: "CSV soubor",
+    submit_field_file_hint: "Sloupce: domain (povinné) a alespoň jedno z text_en/text_de/text_cs s příslušným option1 (správná odpověď). difficulty, další možnosti, další jazyky a correct_option jsou volitelné.",
+    submit_upload: "Nahrát a zkontrolovat", submit_back: "← Zpět",
+    submit_result_summary: "{total} řádků — {pending} čeká na zpracování, {duplicates} již existovalo, {invalid} neplatných.",
     home_view_all: "Zobrazit vše",
     home_streak_active: "Série {count} dní",
 
@@ -332,8 +365,10 @@ window.STRINGS = {
     q_progress: "Otázka {current} z {total}", q_score: "Skóre: {correct}/{total}",
     validate: "Potvrdit", back: "← Zpět", next: "Další →",
     report: "⚑ Nahlásit otázku jako nesprávnou", end_game: "Ukončit hru",
+    flag_question: "🔖 Tohle už znám — skrýt", unflag_question: "🔖 Zase zobrazit tuto otázku",
     correct_msg: "Správně!", wrong_msg: "Není to ono — správná odpověď je zvýrazněná výše.",
     reported_msg: "Nahlášeno administrátorovi ke kontrole — díky za upozornění.",
+    flagged_msg: "Skryto — tuhle otázku už neuvidíš.", unflagged_msg: "Znovu zobrazeno — tahle otázka se může znovu objevit.",
     load_error: "Otázky se nepodařilo načíst. Zkontroluj nastavení Supabase.",
     region_blocked: "Hraní jako host a registrace nejsou ve tvém regionu momentálně dostupné.",
 
@@ -367,6 +402,7 @@ window.STRINGS = {
     load_empty: "Pro tyhle oblasti zatím nejsou žádné otázky. Zkus vybrat jinou.",
     answer_error: "Odpověď se nepodařilo odeslat. Zkontroluj připojení a zkus to znovu.",
     report_error: "Nahlášení se teď nepodařilo odeslat. Zkus to prosím později.",
+    flag_error: "Tohle se teď nepodařilo aktualizovat. Zkus to prosím později.",
     coming_soon: "Zatím není hotové — připravujeme.",
     chart_day_summary: "{total} zodpovězeno, {correct} správně, {wrong} špatně"
   }

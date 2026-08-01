@@ -15,6 +15,8 @@ update — there is no separate migration mechanism.
 | 07 | `07_admin.sql` | Admin layer: user/question moderation, CSV import, tunable settings, audit log |
 | 08 | `08_geo.sql` | Country-of-origin tracking (Cloudflare's `cf-ipcountry` header) for the usage dashboard |
 | 09 | `09_region_block.sql` | Guest-only continent block (Asia/Africa/South America by default) + manual IP ban list + fixed guest demo pool |
+| 10 | `10_user_submissions.sql` | Self-serve question submission for any logged-in user (CSV/JSON batch), with automatic dedup (exact + fuzzy match via `pg_trgm`) and an admin review queue for close-but-not-certain duplicates |
+| 11 | `11_flagged_questions.sql` | "Flag as known" — logged-in users can hide a question from their own quizzes; `flag_question()`/`unflag_question()` RPCs, and `get_quiz_questions()` is recreated to exclude a caller's flagged questions |
 
 ### Step 03 is split into parts
 
@@ -33,7 +35,8 @@ Database**, you can skip the clicking entirely:
 ```bash
 for f in db/01_schema.sql db/02_seed_domains.sql db/03_seed_questions/*.sql \
          db/04_security.sql db/05_rpc.sql db/06_hardening.sql db/07_admin.sql \
-         db/08_geo.sql db/09_region_block.sql; do
+         db/08_geo.sql db/09_region_block.sql db/10_user_submissions.sql \
+         db/11_flagged_questions.sql; do
   psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$f"
 done
 ```
@@ -110,3 +113,6 @@ Re-running 01 → 05 is safe, but note two behaviour changes:
   `admin_list_questions()` and `admin_update_question()` with an extra
   `is_guest_demo` column/parameter — same non-negotiable-arity-change
   reasoning as `get_quiz_questions()` in `06_hardening.sql`.
+* `11_flagged_questions.sql` recreates `get_quiz_questions()` again, same
+  5-argument signature as `09_region_block.sql` left it, just adding one
+  predicate — no arity change, so no drop/re-grant dance needed.

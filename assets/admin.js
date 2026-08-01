@@ -157,6 +157,7 @@
     if (name === 'users') loadUsers();
     else if (name === 'reported') loadReported();
     else if (name === 'questions') loadQuestions();
+    else if (name === 'submissions') loadSubmissions();
     else if (name === 'settings') loadSettings();
     else if (name === 'region') loadRegion();
     else if (name === 'audit') loadAudit();
@@ -538,6 +539,52 @@
     loadQuestions();
   }
 
+  // ----------------------------------------------------------- submissions
+  async function loadSubmissions() {
+    var tbody = $('submissions-tbody');
+    clearChildren(tbody);
+    var includeResolved = $('submissions-include-resolved').checked;
+    var res = await supabaseClient.rpc('admin_list_submissions', {
+      p_status: includeResolved ? null : 'needs_review', p_limit: 200, p_offset: 0
+    });
+    if (res.error) { showToast(friendlyError(res)); return; }
+
+    (res.data || []).forEach(function (s) {
+      var row = el('tr');
+      row.appendChild(el('td', null, s.submitted_by_email || '—'));
+      row.appendChild(el('td', null, s.source || '—'));
+      row.appendChild(el('td', null, s.domain_name || '—'));
+      row.appendChild(el('td', null, (s.languages || []).join(', ').toUpperCase() || '—'));
+      row.appendChild(el('td', 'admin-truncate', s.preview_text || '—'));
+      row.appendChild(el('td', 'admin-truncate', s.matched_question_text || '—'));
+      row.appendChild(el('td', 'num', s.similarity_score != null ? Number(s.similarity_score).toFixed(2) : '—'));
+      row.appendChild(el('td', 'admin-truncate', s.ai_notes || '—'));
+      row.appendChild(el('td', null, s.status));
+
+      var actions = el('td', 'admin-actions');
+      if (s.status === 'needs_review') {
+        var approveBtn = el('button', 'btn btn-sm', 'Approve (add as new)');
+        approveBtn.type = 'button';
+        approveBtn.addEventListener('click', function () { reviewSubmission(s.id, true); });
+        actions.appendChild(approveBtn);
+
+        var rejectBtn = el('button', 'btn btn-sm', 'Reject');
+        rejectBtn.type = 'button';
+        rejectBtn.addEventListener('click', function () { reviewSubmission(s.id, false); });
+        actions.appendChild(rejectBtn);
+      }
+      row.appendChild(actions);
+      tbody.appendChild(row);
+    });
+  }
+
+  async function reviewSubmission(id, approve) {
+    var res = await supabaseClient.rpc('admin_review_submission', { p_submission_id: id, p_approve: approve });
+    if (res.error) { showToast(friendlyError(res)); return; }
+    showToast(approve ? 'Question added.' : 'Submission rejected.');
+    loadSubmissions();
+  }
+
   // -------------------------------------------------------------- settings
   async function loadSettings() {
     var tbody = $('settings-tbody');
@@ -712,6 +759,7 @@
 
     $('users-search').addEventListener('input', debounce(loadUsers, 300));
     $('reported-include-resolved').addEventListener('change', loadReported);
+    $('submissions-include-resolved').addEventListener('change', loadSubmissions);
     $('questions-search').addEventListener('input', debounce(loadQuestions, 300));
     $('csv-file-input').addEventListener('change', handleCsvFileChange);
     $('csv-upload-btn').addEventListener('click', uploadCsv);
